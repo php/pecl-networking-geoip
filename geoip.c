@@ -2,7 +2,7 @@
   +----------------------------------------------------------------------+
   | PHP Version 5                                                        |
   +----------------------------------------------------------------------+
-  | Copyright (c) 1997-2004 The PHP Group                                |
+  | Copyright (c) 1997-2006 The PHP Group                                |
   +----------------------------------------------------------------------+
   | This source file is subject to version 3.0 of the PHP license,       |
   | that is bundled with this package in the file LICENSE, and is        |
@@ -12,13 +12,14 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Author: Matthew Fonda                                                |
+  | Author: Olivier Hill                                                 |
+  |         Matthew Fonda                                                |
   +----------------------------------------------------------------------+
   Please contact support@maxmind.com with any comments
 */
 
 
-#define EXTENSION_VERSION "0.1.3"
+#define EXTENSION_VERSION "0.1.4-dev"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -104,6 +105,9 @@ PHP_MINIT_FUNCTION(geoip)
 {
 	ZEND_INIT_MODULE_GLOBALS(geoip, php_geoip_init_globals, NULL);
 	REGISTER_INI_ENTRIES();
+	
+	_GeoIP_setup_dbfilename();
+	
 	return SUCCESS;
 }
 /* }}} */
@@ -157,13 +161,11 @@ PHP_FUNCTION(geoip_database_info)
 		WRONG_PARAM_COUNT;
 	}
 
-	//gi = GeoIP_new(GEOIP_STANDARD);
-	gi = GeoIP_open(GEOIP_G(database_standard), GEOIP_STANDARD);
+	gi = GeoIP_new(GEOIP_COUNTRY_EDITION);
 	db_info = GeoIP_database_info(gi);
 	GeoIP_delete(gi);
 
 	RETURN_STRING(db_info, 1);
-	efree(db_info);
 }
 /* }}} */
 
@@ -181,7 +183,6 @@ PHP_FUNCTION(geoip_country_code_by_name)
 	}
 
 	gi = GeoIP_new(GEOIP_COUNTRY_EDITION);
-	//gi = GeoIP_open(GEOIP_G(database_standard), GEOIP_COUNTRY_EDITION);
 	country_code = GeoIP_country_code_by_name(gi, hostname);
 	GeoIP_delete(gi);
 	if (country_code == NULL) {
@@ -231,6 +232,10 @@ PHP_FUNCTION(geoip_org_by_name)
 	const char * org;
 	int arglen;
 
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &hostname, &arglen) == FAILURE) {
+		return;
+	}
+	
 	if (GeoIP_db_avail(GEOIP_ORG_EDITION)) {
 		gi = GeoIP_open_type(GEOIP_ORG_EDITION, GEOIP_STANDARD);
 	}   else {
@@ -238,9 +243,6 @@ PHP_FUNCTION(geoip_org_by_name)
 		return;
 	}
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &hostname, &arglen) == FAILURE) {
-		return;
-	}
 	org = GeoIP_org_by_name(gi, hostname);
 	GeoIP_delete(gi);
 	if (org == NULL) {
@@ -274,6 +276,8 @@ PHP_FUNCTION(geoip_record_by_name)
 	}
 	gir = GeoIP_record_by_name(gi, hostname);
 
+	GeoIP_delete(gi);
+	
 	if (NULL == gir) {
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
 		return;
@@ -301,7 +305,6 @@ PHP_FUNCTION(geoip_record_by_name)
 	add_assoc_double(return_value, "longitude", gir->longitude);
 	add_assoc_long(return_value, "dma_code", gir->dma_code);
 	add_assoc_long(return_value, "area_code", gir->area_code);
-	GeoIP_delete(gi);
 }
 /* }}} */
 
