@@ -1,0 +1,18 @@
+This PHP extension allows you to find the location of an IP address - City, State, 
+Country, Longitude, Latitude, and other information as all, such as ISP and connection type.
+
+To compile it, you will need to have the GeoIP c library installed.
+
+For installation instructions for PHP extensions, see:
+http://www.php.net/manual/en/install.pecl.php
+
+Note added by Guenter Knauf for changes made to 0.1.2 release:
+  Since I'm very new to the GeoIP API I dont know how to specify properly the database file
+  when calling the functions; first trial worked with geoip_database_info(), but next did
+  not with geoip_country_code_by_name() - and again segfault...
+  So for now I would like to leave the proper calls of the GeoIP lib to someone with more
+  insigt - I did the PHP stuff where I'm a bit more familar with....
+  Also from what I see it would probably make more sense to specify a base directory rather
+  then the fullpath filename; but the Apache2 mod_geoip2 also takes the filename....;
+  so I'm asking me what about the other libs? Or can we only have one at same time?
+

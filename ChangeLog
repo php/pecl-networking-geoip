@@ -1,0 +1,24 @@
+0.1.3	2006-7-10
+
+Following changes made by Olivier Hill
+	* Missing PHP function prototypes
+	* Fixing code foldings in Emacs
+	* Outputting E_NOTICES instead of E_WARNING when non fatal errors
+	* Return type of longitude/latitude should be DOUBLE and not LONG
+
+0.1.2	2006-5-19
+	* Following changes all contributed by Guenter Knauf
+- moved argument parsing up at various places before we create a GeoIP.
+- moved GeoIP_delete() call at various places up to get it called before we error out.
+- fixed one place where a missing return caused a segfault on all platforms because
+  RETURN_STRING() was called with NULL when GeoIP lookup failed.
+- added php.ini entry parsing; prepared for usage of geoip.database_standard var.
+  This works fine so far as you can test with the geoip_database_info() call which uses
+  the database configured with the geoip.database_standard var; if not set it defaults
+  to the usual place specified during compile time with GEOIPDATADIR. All other functions
+  currently still ignore the geoip.database_standard setting, but default usually also
+  to GEOIPDATADIR from what I see. Search for the dirty '//' comments ....
+	* Added config.m4, contributed by Jonathan Whiteman of cyberflowsolutions.com
+
+0.1.1	2005-9-21
+	* Initial release, contributed by Matthew Fonda
