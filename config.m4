@@ -1,38 +1,25 @@
 dnl $Id$
 dnl config.m4 for extension geoip
 
-dnl Contributed by Jonathan Whiteman of cyberflowsolutions.com
-
-dnl Comments in this file start with the string 'dnl'.
-dnl Remove where necessary. This file will not work
-dnl without editing.
-
-dnl If your extension references something external, use with:
+dnl Base file contributed by Jonathan Whiteman of cyberflowsolutions.com
 
 PHP_ARG_WITH(geoip, for geoip support,
 dnl Make sure that the comment is aligned:
 [  --with-geoip             Include GeoIP support])
 
-dnl Otherwise use enable:
-
-dnl PHP_ARG_ENABLE(geoip, whether to enable geoip support,
-dnl Make sure that the comment is aligned:
-dnl [  --enable-geoip           Enable geoip support])
-
 if test "$PHP_GEOIP" != "no"; then
-  dnl Write more examples of tests here...
 
   # --with-geoip -> check with-path
-  SEARCH_PATH="/usr/local /usr"     # you might want to change this
-  SEARCH_FOR="/include/GeoIP.h"  # you most likely want to change this
-  if test -r $PHP_GEOIP/$SEARCH_FOR; then # path given as parameter
+  SEARCH_PATH="/usr/local /usr /sw"
+  SEARCH_FOR="/include/GeoIP.h"
+  if test -r $PHP_GEOIP/$SEARCH_FOR; then
     GEOIP_DIR=$PHP_GEOIP
   else # search default path list
     AC_MSG_CHECKING([for geoip files in default path])
     for i in $SEARCH_PATH ; do
       if test -r $i/$SEARCH_FOR; then
         GEOIP_DIR=$i
-        AC_MSG_RESULT(found in $i)
+        AC_MSG_RESULT([found in $i])
       fi
     done
   fi
@@ -58,6 +45,29 @@ if test "$PHP_GEOIP" != "no"; then
   ],[
     -L$GEOIP_DIR/lib -lm -ldl
   ])
+
+  # Check to see if we are using the LGPL library (version 1.4.0 and newer)
+  AC_MSG_CHECKING([for LGPL compatible GeoIP libs])
+  libgeoip_full_version=`find $GEOIP_DIR/lib/ -name libGeoIP.\*.\*.\*.\* | cut -d . -f 2-5`
+  ac_IFS=$IFS
+  IFS="."
+  set $libgeoip_full_version
+  IFS=$ac_IFS
+
+  # Version after the suffix (eg: .so.1.4.0)
+  if test "[$]1" = "$SHLIB_SUFFIX_NAME"; then
+    LIBGEOIP_VERSION=`expr [$]2 \* 1000000 + [$]3 \* 1000 + [$]4`
+  # Version before the suffix (eg: 1.4.0.dylib on OS X)
+  else
+    LIBGEOIP_VERSION=`expr [$]1 \* 1000000 + [$]2 \* 1000 + [$]3`
+  fi
+
+  if test "$LIBGEOIP_VERSION" -lt "1004000"; then
+    AC_MSG_RESULT([wrong version])
+    AC_MSG_ERROR([You need version 1.4.0 or higher of the C API])
+  else
+    AC_MSG_RESULT([found $LIBGEOIP_VERSION])
+  fi
 
   PHP_SUBST(GEOIP_SHARED_LIBADD)
 
