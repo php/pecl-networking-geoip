@@ -182,7 +182,13 @@ PHP_FUNCTION(geoip_country_code_by_name)
 		return;
 	}
 
-	gi = GeoIP_new(GEOIP_COUNTRY_EDITION);
+	if (GeoIP_db_avail(GEOIP_COUNTRY_EDITION)) {
+		gi = GeoIP_new(GEOIP_COUNTRY_EDITION);
+	} else {
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available.");
+		return;
+	}
+	
 	country_code = GeoIP_country_code_by_name(gi, hostname);
 	GeoIP_delete(gi);
 	if (country_code == NULL) {
