@@ -266,8 +266,6 @@ PHP_FUNCTION(geoip_record_by_name)
 		return;
 	}
 
-	_GeoIP_setup_dbfilename();
-
 	if (GeoIP_db_avail(GEOIP_CITY_EDITION_REV1)) {
 		gi = GeoIP_open_type(GEOIP_CITY_EDITION_REV1, GEOIP_STANDARD);
 	}   else {
@@ -283,28 +281,17 @@ PHP_FUNCTION(geoip_record_by_name)
 		return;
 	}
 	
-	if (NULL == gir->country_code) {
-		gir->country_code = "";
-	}
-	if (NULL == gir->region) {
-		gir->region = "";
-	}
-	if (NULL == gir->city) {
-		gir->city = "";
-	}
-	if (NULL == gir->postal_code) {
-		gir->postal_code = "";
-	}
-
 	array_init(return_value);
-	add_assoc_string(return_value, "country_code", gir->country_code, 1);
-	add_assoc_string(return_value, "region", gir->region, 1);
-	add_assoc_string(return_value, "city", gir->city, 1);
-	add_assoc_string(return_value, "postal_code", gir->postal_code, 1);
+	add_assoc_string(return_value, "country_code", (gir->country_code == NULL) ? "" : gir->country_code, 1);
+	add_assoc_string(return_value, "region", (gir->region == NULL) ? "" : gir->region, 1);
+	add_assoc_string(return_value, "city", (gir->city == NULL) ? "" : gir->city, 1);
+	add_assoc_string(return_value, "postal_code", (gir->postal_code == NULL) ? "" : gir->postal_code, 1);
 	add_assoc_double(return_value, "latitude", gir->latitude);
 	add_assoc_double(return_value, "longitude", gir->longitude);
 	add_assoc_long(return_value, "dma_code", gir->dma_code);
 	add_assoc_long(return_value, "area_code", gir->area_code);
+	
+	GeoIPRecord_delete(gir);
 }
 /* }}} */
 
@@ -369,6 +356,8 @@ PHP_FUNCTION(geoip_region_by_name)
 	array_init(return_value);
 	add_assoc_string(return_value, "country_code", region->country_code, 1);
 	add_assoc_string(return_value, "region", region->region, 1);
+	
+	GeoIPRegion_delete(region);
 }
 /* }}} */
 
