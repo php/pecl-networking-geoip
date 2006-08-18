@@ -43,6 +43,7 @@ static int le_geoip;
 function_entry geoip_functions[] = {
 	PHP_FE(geoip_database_info,   NULL)   
 	PHP_FE(geoip_country_code_by_name,   NULL)
+	PHP_FE(geoip_country_code3_by_name,   NULL)
 	PHP_FE(geoip_country_name_by_name,   NULL)
 	PHP_FE(geoip_org_by_name,   NULL)
 	PHP_FE(geoip_record_by_name,   NULL)
@@ -184,7 +185,8 @@ PHP_FUNCTION(geoip_database_info)
 	db_info = GeoIP_database_info(gi);
 	GeoIP_delete(gi);
 
-	RETURN_STRING(db_info, 1);
+	RETVAL_STRING(db_info, 1);
+	free(db_info);
 }
 /* }}} */
 
@@ -209,6 +211,36 @@ PHP_FUNCTION(geoip_country_code_by_name)
 	}
 	
 	country_code = GeoIP_country_code_by_name(gi, hostname);
+	GeoIP_delete(gi);
+	if (country_code == NULL) {
+		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
+		return;
+	}
+	RETURN_STRING((char*)country_code, 1);
+}
+/* }}} */
+
+/* {{{ proto string geoip_country_code_by_name( string hostname )
+   Return the Country Code found in the GeoIP Database */
+PHP_FUNCTION(geoip_country_code3_by_name)
+{
+	GeoIP * gi;
+	char * hostname = NULL;
+	const char * country_code;
+	int arglen;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &hostname, &arglen) == FAILURE) {
+		return;
+	}
+
+	if (GeoIP_db_avail(GEOIP_COUNTRY_EDITION)) {
+		gi = GeoIP_open_type(GEOIP_COUNTRY_EDITION, GEOIP_STANDARD);
+	} else {
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available.");
+		return;
+	}
+	
+	country_code = GeoIP_country_code3_by_name(gi, hostname);
 	GeoIP_delete(gi);
 	if (country_code == NULL) {
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
@@ -291,8 +323,12 @@ PHP_FUNCTION(geoip_record_by_name)
 		return;
 	}
 
-	if (GeoIP_db_avail(GEOIP_CITY_EDITION_REV1)) {
-		gi = GeoIP_open_type(GEOIP_CITY_EDITION_REV1, GEOIP_STANDARD);
+	if (GeoIP_db_avail(GEOIP_CITY_EDITION_REV1) || GeoIP_db_avail(GEOIP_CITY_EDITION_REV0)) {
+		if (GeoIP_db_avail(GEOIP_CITY_EDITION_REV1)) {
+			gi = GeoIP_open_type(GEOIP_CITY_EDITION_REV1, GEOIP_STANDARD);
+		} else {
+			gi = GeoIP_open_type(GEOIP_CITY_EDITION_REV0, GEOIP_STANDARD);
+		}
 	}   else {
 		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available");
 		return;
