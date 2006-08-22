@@ -16,10 +16,10 @@ For more info, please visit Maxmind's website.
   </maintainer>
  </maintainers>
  <release>
-  <version>0.1.4-dev</version>
-  <date>2006-08-17</date>
+  <version>0.2.0</version>
+  <date>2006-08-22</date>
   <license>PHP</license>
-  <state>alpha</state>
+  <state>beta</state>
   <notes>Initial PECL release</notes>
   <deps>
    <dep type="php" rel="ge" version="4.3.0" optional="no"/>
@@ -34,9 +34,9 @@ For more info, please visit Maxmind's website.
  </release>
  <changelog>
   <release>
-   <version>0.1.4-dev</version>
-   <date>2006-08-17</date>
-   <state>alpha</state>
+   <version>0.2.0</version>
+   <date>2006-08-22</date>
+   <state>beta</state>
    <notes>Initial PECL release</notes>
   </release>
  </changelog>
