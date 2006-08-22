@@ -109,6 +109,7 @@ PHP_MINIT_FUNCTION(geoip)
 	
 	_GeoIP_setup_dbfilename();
 	
+	/* For database type constants */
 	REGISTER_LONG_CONSTANT("GEOIP_COUNTRY_EDITION",     GEOIP_COUNTRY_EDITION,     CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("GEOIP_REGION_EDITION_REV0", GEOIP_REGION_EDITION_REV0, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("GEOIP_CITY_EDITION_REV0",   GEOIP_CITY_EDITION_REV0,   CONST_CS | CONST_PERSISTENT);
@@ -120,6 +121,12 @@ PHP_MINIT_FUNCTION(geoip)
 	REGISTER_LONG_CONSTANT("GEOIP_ASNUM_EDITION",       GEOIP_ASNUM_EDITION,       CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("GEOIP_NETSPEED_EDITION",    GEOIP_NETSPEED_EDITION,    CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("GEOIP_DOMAIN_EDITION",      GEOIP_DOMAIN_EDITION,      CONST_CS | CONST_PERSISTENT);
+	
+	/* For netspeed constants */
+	REGISTER_LONG_CONSTANT("GEOIP_UNKNOWN_SPEED",       GEOIP_UNKNOWN_SPEED,       CONST_CS | CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("GEOIP_DIALUP_SPEED",        GEOIP_DIALUP_SPEED,        CONST_CS | CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("GEOIP_CABLEDSL_SPEED",      GEOIP_CABLEDSL_SPEED,      CONST_CS | CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("GEOIP_CORPORATE_SPEED",     GEOIP_CORPORATE_SPEED,     CONST_CS | CONST_PERSISTENT);
 	
 	return SUCCESS;
 }
@@ -163,7 +170,7 @@ PHP_MINFO_FUNCTION(geoip)
 }
 /* }}} */
 
-/* {{{ proto string geoip_database_info()
+/* {{{ proto string geoip_database_info( [ int database ] )
    Returns GeoIP Database information */
 PHP_FUNCTION(geoip_database_info)
 {
@@ -214,7 +221,7 @@ PHP_FUNCTION(geoip_country_code_by_name)
 	GeoIP_delete(gi);
 	if (country_code == NULL) {
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
-		return;
+		RETURN_FALSE;
 	}
 	RETURN_STRING((char*)country_code, 1);
 }
@@ -244,7 +251,7 @@ PHP_FUNCTION(geoip_country_code3_by_name)
 	GeoIP_delete(gi);
 	if (country_code == NULL) {
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
-		return;
+		RETURN_FALSE;
 	}
 	RETURN_STRING((char*)country_code, 1);
 }
@@ -274,7 +281,7 @@ PHP_FUNCTION(geoip_country_name_by_name)
 	GeoIP_delete(gi);
 	if (country_name == NULL) {
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
-		return;
+		RETURN_FALSE;
 	}
 	RETURN_STRING((char*)country_name, 1);
 }
@@ -304,7 +311,7 @@ PHP_FUNCTION(geoip_org_by_name)
 	GeoIP_delete(gi);
 	if (org == NULL) {
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
-		return;
+		RETURN_FALSE;
 	}
 	RETURN_STRING((char*)org, 1);
 }
@@ -339,7 +346,7 @@ PHP_FUNCTION(geoip_record_by_name)
 	
 	if (NULL == gir) {
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
-		return;
+		RETURN_FALSE;
 	}
 	
 	array_init(return_value);
@@ -411,7 +418,7 @@ PHP_FUNCTION(geoip_region_by_name)
 
 	if (NULL == region) {
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
-		return;
+		RETURN_FALSE;
 	}
 
 	array_init(return_value);
