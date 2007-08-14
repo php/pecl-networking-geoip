@@ -16,11 +16,12 @@ For more info, please visit Maxmind's website.
   </maintainer>
  </maintainers>
  <release>
-  <version>0.2.0</version>
-  <date>2006-08-22</date>
+  <version>1.0.0</version>
+  <date>2007-08-14</date>
   <license>PHP</license>
-  <state>beta</state>
-  <notes>Initial PECL release</notes>
+  <state>stable</state>
+   <notes>* Marked as stable
+* Fixing wrong version number inside extension</notes>
   <deps>
    <dep type="php" rel="ge" version="4.3.0" optional="no"/>
   </deps>
@@ -33,6 +34,13 @@ For more info, please visit Maxmind's website.
   </filelist>
  </release>
  <changelog>
+  <release>
+   <version>1.0.0</version>
+   <date>2007-08-14</date>
+   <state>stable</state>
+   <notes>* Marked as stable
+* Fixing wrong version number inside extension</notes>
+  </release>
   <release>
    <version>0.2.0</version>
    <date>2006-08-22</date>

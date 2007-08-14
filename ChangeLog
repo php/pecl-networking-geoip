@@ -1,3 +1,8 @@
+1.0.0	2007-08-14
+
+ * Marked as stable
+ * Fixing wrong version number inside extension
+
 0.2.0	2006-08-22
 
  * Initial PECL Release
