@@ -1,3 +1,11 @@
+1.x.x-dev [not yet released]
+
+ * Added geoip_db_avail() to check for DB availability (file found)
+ * Added geoip_db_filename() to get the internal file name of the library
+ * Added geoip_db_get_all_info() to fetch all info about all database types
+ * Added some tests so that make test can crunch something.
+ * Added database file path and name in warning when DB is not found.
+
 1.0.0	2007-08-14
 
  * Marked as stable

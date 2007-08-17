@@ -51,10 +51,12 @@ PHP_FUNCTION(geoip_org_by_name);
 PHP_FUNCTION(geoip_record_by_name);
 PHP_FUNCTION(geoip_id_by_name);
 PHP_FUNCTION(geoip_region_by_name);
-
+PHP_FUNCTION(geoip_db_avail);
+PHP_FUNCTION(geoip_db_get_all_info);
+PHP_FUNCTION(geoip_db_filename);
 
 ZEND_BEGIN_MODULE_GLOBALS(geoip)
-	char* database_standard;
+	char* custom_directory;
 ZEND_END_MODULE_GLOBALS(geoip)
 
 #ifdef ZTS

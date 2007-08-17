@@ -19,7 +19,7 @@
 */
 
 
-#define EXTENSION_VERSION "1.0.0"
+#define EXTENSION_VERSION "1.x.x-dev"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -49,7 +49,10 @@ function_entry geoip_functions[] = {
 	PHP_FE(geoip_record_by_name,   NULL)
 	PHP_FE(geoip_id_by_name,   NULL)
 	PHP_FE(geoip_region_by_name,   NULL)
-	{NULL, NULL, NULL}   
+	PHP_FE(geoip_db_avail,	NULL)
+	PHP_FE(geoip_db_get_all_info,	NULL)
+	PHP_FE(geoip_db_filename,	NULL)
+	{NULL, NULL, NULL}
 };
 /* }}} */
 
@@ -88,7 +91,7 @@ ZEND_GET_MODULE(geoip)
 /* {{{ PHP_INI
  */
 PHP_INI_BEGIN()
-	STD_PHP_INI_ENTRY("geoip.database_standard", GEOIPDATABASE, PHP_INI_ALL, OnUpdateString, database_standard, zend_geoip_globals, geoip_globals)
+	STD_PHP_INI_ENTRY("geoip.custom_directory", GEOIPDATABASE, PHP_INI_ALL, OnUpdateString, custom_directory, zend_geoip_globals, geoip_globals)
 PHP_INI_END()
 /* }}} */
 
@@ -96,7 +99,7 @@ PHP_INI_END()
  */
 static void php_geoip_init_globals(zend_geoip_globals *geoip_globals)
 {
-	geoip_globals->database_standard = NULL;
+	geoip_globals->custom_directory = NULL;
 }
 /* }}} */
 
@@ -107,6 +110,7 @@ PHP_MINIT_FUNCTION(geoip)
 	ZEND_INIT_MODULE_GLOBALS(geoip, php_geoip_init_globals, NULL);
 	REGISTER_INI_ENTRIES();
 	
+	/* @TODO: Do something for custom_directory before initialization here */
 	_GeoIP_setup_dbfilename();
 	
 	/* For database type constants */
@@ -170,6 +174,69 @@ PHP_MINFO_FUNCTION(geoip)
 }
 /* }}} */
 
+/* {{{ proto boolean geoip_db_avail( [ int database ] ) */
+PHP_FUNCTION(geoip_db_avail)
+{
+	long edition;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &edition) == FAILURE) {
+		return;
+	}
+	
+	if (edition < 0 || edition >= NUM_DB_TYPES)
+	{
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Database type given is out of bound.");
+		return;
+	}
+	
+	RETURN_BOOL(GeoIP_db_avail(edition));    
+}
+/* }}} */
+
+/* {{{ proto string geoip_db_filename( [ int database ] ) */
+PHP_FUNCTION(geoip_db_filename)
+{
+	long edition;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &edition) == FAILURE) {
+		return;
+	}
+	
+	if (edition < 0 || edition >= NUM_DB_TYPES)
+	{
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Database type given is out of bound.");
+		return;
+	}
+		
+	RETURN_STRING(GeoIPDBFileName[edition], 1);	
+}
+/* }}} */
+
+/* {{{ proto array geoip_db_get_all_info( ) */
+PHP_FUNCTION(geoip_db_get_all_info)
+{
+	int i;
+	
+	array_init(return_value);
+
+	for (i=0; i < NUM_DB_TYPES; i++)
+	{
+		if (NULL != GeoIPDBDescription[i])
+		{
+			zval *row;
+			ALLOC_INIT_ZVAL(row);
+			array_init(row);
+
+			add_assoc_bool(row, "available", GeoIP_db_avail(i));
+			add_assoc_string(row, "description", GeoIPDBDescription[i], 1);
+			add_assoc_string(row, "filename", GeoIPDBFileName[i], 1);
+
+			add_index_zval(return_value, i, row);
+		}
+	}
+}
+/* }}} */
+
 /* {{{ proto string geoip_database_info( [ int database ] )
    Returns GeoIP Database information */
 PHP_FUNCTION(geoip_database_info)
@@ -213,7 +280,7 @@ PHP_FUNCTION(geoip_country_code_by_name)
 	if (GeoIP_db_avail(GEOIP_COUNTRY_EDITION)) {
 		gi = GeoIP_open_type(GEOIP_COUNTRY_EDITION, GEOIP_STANDARD);
 	} else {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available.");
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_COUNTRY_EDITION]);
 		return;
 	}
 	
@@ -243,7 +310,7 @@ PHP_FUNCTION(geoip_country_code3_by_name)
 	if (GeoIP_db_avail(GEOIP_COUNTRY_EDITION)) {
 		gi = GeoIP_open_type(GEOIP_COUNTRY_EDITION, GEOIP_STANDARD);
 	} else {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available.");
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_COUNTRY_EDITION]);
 		return;
 	}
 	
@@ -273,7 +340,7 @@ PHP_FUNCTION(geoip_country_name_by_name)
 	if (GeoIP_db_avail(GEOIP_COUNTRY_EDITION)) {
 		gi = GeoIP_open_type(GEOIP_COUNTRY_EDITION, GEOIP_STANDARD);
 	}   else {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available.");
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_COUNTRY_EDITION]);
 		return;
 	}
 
@@ -303,7 +370,7 @@ PHP_FUNCTION(geoip_org_by_name)
 	if (GeoIP_db_avail(GEOIP_ORG_EDITION)) {
 		gi = GeoIP_open_type(GEOIP_ORG_EDITION, GEOIP_STANDARD);
 	}   else {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available");
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_ORG_EDITION]);
 		return;
 	}
 
@@ -337,7 +404,7 @@ PHP_FUNCTION(geoip_record_by_name)
 			gi = GeoIP_open_type(GEOIP_CITY_EDITION_REV0, GEOIP_STANDARD);
 		}
 	}   else {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available");
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_CITY_EDITION_REV0]);
 		return;
 	}
 	gir = GeoIP_record_by_name(gi, hostname);
@@ -379,7 +446,7 @@ PHP_FUNCTION(geoip_id_by_name)
 	if (GeoIP_db_avail(GEOIP_NETSPEED_EDITION)) {
 		gi = GeoIP_open_type(GEOIP_NETSPEED_EDITION, GEOIP_STANDARD);
 	}   else {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available");
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_NETSPEED_EDITION]);
 		return;
 	}
 
@@ -409,7 +476,7 @@ PHP_FUNCTION(geoip_region_by_name)
 			gi = GeoIP_open_type(GEOIP_REGION_EDITION_REV0, GEOIP_STANDARD);
 		}
 	}   else {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available");
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_REGION_EDITION_REV0]);
 		return;
 	}
 
