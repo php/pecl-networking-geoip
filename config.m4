@@ -46,6 +46,15 @@ if test "$PHP_GEOIP" != "no"; then
     -L$GEOIP_DIR/lib -lm -ldl
   ])
 
+  # Checking for GeoIP_setup_custom_directory in newer lib
+  PHP_CHECK_LIBRARY($LIBNAME,GeoIP_setup_custom_directory,
+  [
+    AC_DEFINE(HAVE_CUSTOM_DIRECTORY,1,[ ])
+  ],[
+  ],[
+    -L$GEOIP_DIR/lib -lm -ldl
+  ])
+
   # Check to see if we are using the LGPL library (version 1.4.0 and newer)
   AC_MSG_CHECKING([for LGPL compatible GeoIP libs])
   libgeoip_full_version=`find $GEOIP_DIR/lib/ -name libGeoIP.\*.\*.\*.\* | cut -d . -f 2-5`
@@ -67,6 +76,7 @@ if test "$PHP_GEOIP" != "no"; then
     AC_MSG_ERROR([You need version 1.4.0 or higher of the C API])
   else
     AC_MSG_RESULT([found $LIBGEOIP_VERSION])
+    AC_DEFINE_UNQUOTED(LIBGEOIP_VERSION, $LIBGEOIP_VERSION, [ ])
   fi
 
   PHP_SUBST(GEOIP_SHARED_LIBADD)

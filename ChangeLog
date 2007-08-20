@@ -5,6 +5,7 @@
  * Added geoip_db_get_all_info() to fetch all info about all database types
  * Added some tests so that make test can crunch something.
  * Added database file path and name in warning when DB is not found.
+ * Added geoip.custom_directory php.ini option to change default path for DBs
 
 1.0.0	2007-08-14
 

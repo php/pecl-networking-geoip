@@ -80,18 +80,12 @@ zend_module_entry geoip_module_entry = {
 ZEND_GET_MODULE(geoip)
 #endif
 
-
-#ifdef GEOIPDATADIR
-#define GEOIPDATABASE GEOIPDATADIR "/GeoIP.dat"
-#else
-#define GEOIPDATABASE "GeoIP.dat"
-#endif
-
-
 /* {{{ PHP_INI
  */
 PHP_INI_BEGIN()
+#ifdef HAVE_CUSTOM_DIRECTORY
 	STD_PHP_INI_ENTRY("geoip.custom_directory", NULL, PHP_INI_ALL, OnUpdateString, custom_directory, zend_geoip_globals, geoip_globals)
+#endif
 PHP_INI_END()
 /* }}} */
 
@@ -111,8 +105,10 @@ PHP_MINIT_FUNCTION(geoip)
 	REGISTER_INI_ENTRIES();
 	
 	/* @TODO: Do something for custom_directory before initialization here */
-	
+
+#ifdef HAVE_CUSTOM_DIRECTORY
 	GeoIP_setup_custom_directory(GEOIP_G(custom_directory));
+#endif
 	
 	_GeoIP_setup_dbfilename();
 	
