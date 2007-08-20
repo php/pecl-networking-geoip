@@ -206,8 +206,9 @@ PHP_FUNCTION(geoip_db_filename)
 		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Database type given is out of bound.");
 		return;
 	}
-		
-	RETURN_STRING(GeoIPDBFileName[edition], 1);	
+	
+	if (NULL != GeoIPDBFileName[edition])
+		RETURN_STRING(GeoIPDBFileName[edition], 1);	
 }
 /* }}} */
 
@@ -248,10 +249,19 @@ PHP_FUNCTION(geoip_database_info)
 		return;
 	}
 
+	if (edition < 0 || edition >= NUM_DB_TYPES)
+	{
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Database type given is out of bound.");
+		return;
+	}
+	
 	if (GeoIP_db_avail(edition)) {
 		gi = GeoIP_open_type(edition, GEOIP_STANDARD);
 	} else {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available.");
+		if (NULL != GeoIPDBFileName[edition])
+			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_COUNTRY_EDITION]);
+		else
+			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available.");
 		return;
 	}
 	
