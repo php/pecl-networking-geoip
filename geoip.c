@@ -19,7 +19,7 @@
 */
 
 
-#define EXTENSION_VERSION "1.x.x-dev"
+#define EXTENSION_VERSION "1.0.1"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

@@ -1,51 +1,120 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0" packagerversion="1.4.10">
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.6.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+http://pear.php.net/dtd/tasks-1.0.xsd
+http://pear.php.net/dtd/package-2.0
+http://pear.php.net/dtd/package-2.0.xsd">
  <name>geoip</name>
+ <channel>pecl.php.net</channel>
  <summary>Map IP address to geographic places</summary>
- <description>This PHP extension allows you to find the location of an IP address - City, State,
-Country, Longitude, Latitude, and other information as all, such as ISP and connection type.
-For more info, please visit Maxmind's website.
+ <description>This PHP extension allows you to find the location of an IP address - City, State, Country, Longitude, Latitude, and other information as all, such as ISP and connection type. For more info, please visit Maxmind&apos;s website.
+ 
  </description>
- <maintainers>
-  <maintainer>
-   <user>ohill</user>
-   <name>Olivier Hill</name>
-   <email>ohill@php.net</email>
-   <role>lead</role>
-  </maintainer>
- </maintainers>
- <release>
-  <version>1.0.0</version>
-  <date>2007-08-14</date>
-  <license>PHP</license>
-  <state>stable</state>
-   <notes>* Marked as stable
-* Fixing wrong version number inside extension</notes>
-  <deps>
-   <dep type="php" rel="ge" version="4.3.0" optional="no"/>
-  </deps>
-  <filelist>
-   <file role="doc" name="README"/>
-   <file role="doc" name="ChangeLog"/>
-   <file role="src" name="config.m4"/>
-   <file role="src" name="php_geoip.h"/>
-   <file role="src" name="geoip.c"/>
-  </filelist>
- </release>
+ <lead>
+  <name>Olivier Hill</name>
+  <user>ohill</user>
+  <email>ohill@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2007-08-22</date>
+ <time>09:39:56</time>
+ <version>
+  <release>1.0.1</release>
+  <api>1.0.1</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.php.net/license">PHP</license>
+ <notes>* Added geoip_db_avail() to check for DB availability (file found)
+* Added geoip_db_filename() to get the internal file name of the library
+* Added geoip_db_get_all_info() to fetch all info about all database types
+* Added some tests so that make test can crunch something.
+* Added database file path and name in warning when DB is not found.
+* Added geoip.custom_directory php.ini option to change default path for DBs
+ </notes>
+ <contents>
+  <dir name="/">
+   <dir name="tests">
+    <file name="001.phpt" role="test" />
+    <file name="002.phpt" role="test" />
+    <file name="003.phpt" role="test" />
+    <file name="004.phpt" role="test" />
+    <file name="005.phpt" role="test" />
+    <file name="006.phpt" role="test" />
+    <file name="007.phpt" role="test" />
+    <file name="008.phpt" role="test" />
+    <file name="009.phpt" role="test" />
+    <file name="010.phpt" role="test" />
+    <file name="011.phpt" role="test" />
+   </dir> <!-- //tests -->
+   <file name="ChangeLog" role="doc" />
+   <file name="config.m4" role="src" />
+   <file name="geoip.c" role="src" />
+   <file name="php_geoip.h" role="src" />
+   <file name="README" role="doc" />
+  </dir> <!-- / -->
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.3.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <providesextension>geoip</providesextension>
+ <extsrcrelease />
  <changelog>
   <release>
-   <version>1.0.0</version>
-   <date>2007-08-14</date>
-   <state>stable</state>
-   <notes>* Marked as stable
-* Fixing wrong version number inside extension</notes>
+   <version>
+    <release>1.0.1</release>
+    <api>1.0.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2007-08-22</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>* Added geoip_db_avail() to check for DB availability (file found)
+* Added geoip_db_filename() to get the internal file name of the library
+* Added geoip_db_get_all_info() to fetch all info about all database types
+* Added some tests so that make test can crunch something.
+* Added database file path and name in warning when DB is not found.
+* Added geoip.custom_directory php.ini option to change default path for DBs
+   </notes>
   </release>
   <release>
-   <version>0.2.0</version>
+   <version>
+    <release>1.0.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2007-08-14</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>* Marked as stable
+* Fixing wrong version number inside extension
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.2.0</release>
+    <api>0.2.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
    <date>2006-08-22</date>
-   <state>beta</state>
-   <notes>Initial PECL release</notes>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>Initial PECL release
+   </notes>
   </release>
  </changelog>
 </package>
