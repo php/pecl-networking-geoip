@@ -1,4 +1,8 @@
-1.x.x-dev [not yet released]
+1.0.2	2007-11-20
+
+ * Added geoip_isp_by_name (patch by Yannick Gard)
+
+1.0.1	2007-08-22
 
  * Added geoip_db_avail() to check for DB availability (file found)
  * Added geoip_db_filename() to get the internal file name of the library

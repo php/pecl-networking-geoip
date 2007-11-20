@@ -15,23 +15,18 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <email>ohill@php.net</email>
   <active>yes</active>
  </lead>
- <date>2007-08-22</date>
+ <date>2007-11-20</date>
  <time>09:39:56</time>
  <version>
-  <release>1.0.1</release>
-  <api>1.0.1</api>
+  <release>1.0.2</release>
+  <api>1.0.2</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
- <notes>* Added geoip_db_avail() to check for DB availability (file found)
-* Added geoip_db_filename() to get the internal file name of the library
-* Added geoip_db_get_all_info() to fetch all info about all database types
-* Added some tests so that make test can crunch something.
-* Added database file path and name in warning when DB is not found.
-* Added geoip.custom_directory php.ini option to change default path for DBs
+ <notes>* Added geoip_isp_by_name (patch by Yannick Gard)
  </notes>
  <contents>
   <dir name="/">
@@ -68,6 +63,20 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <providesextension>geoip</providesextension>
  <extsrcrelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.0.2</release>
+    <api>1.0.2</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2007-11-20</date>
+   <license uri="http://www.php.net/license">PHP</license>
+   <notes>* Added geoip_isp_by_name (patch by Yannick Gard)
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.0.1</release>

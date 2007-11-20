@@ -12,14 +12,14 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Author: Olivier Hill                                                 |
+  | Author: Olivier Hill   <ohill@php.net>                               |
   |         Matthew Fonda                                                |
   +----------------------------------------------------------------------+
   Please contact support@maxmind.com with any comments
 */
 
 
-#define EXTENSION_VERSION "1.0.1"
+#define EXTENSION_VERSION "1.0.2"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -49,6 +49,7 @@ function_entry geoip_functions[] = {
 	PHP_FE(geoip_record_by_name,   NULL)
 	PHP_FE(geoip_id_by_name,   NULL)
 	PHP_FE(geoip_region_by_name,   NULL)
+	PHP_FE(geoip_isp_by_name,   NULL)
 	PHP_FE(geoip_db_avail,	NULL)
 	PHP_FE(geoip_db_get_all_info,	NULL)
 	PHP_FE(geoip_db_filename,	NULL)
@@ -504,6 +505,36 @@ PHP_FUNCTION(geoip_region_by_name)
 	GeoIPRegion_delete(region);
 }
 /* }}} */
+
+/* {{{ proto string geoip_isp_by_name( string hostname )
+   Returns the ISP Name found in the GeoIP Database */
+PHP_FUNCTION(geoip_isp_by_name)
+{
+	GeoIP * gi;
+	char * hostname = NULL;
+	const char * isp;
+	int arglen;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &hostname, &arglen) == FAILURE) {
+		return;
+	}
+	
+	if (GeoIP_db_avail(GEOIP_ISP_EDITION)) {
+		gi = GeoIP_open_type(GEOIP_ISP_EDITION, GEOIP_STANDARD);
+	}   else {
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_ISP_EDITION]);
+		return;
+	}
+
+	isp = GeoIP_name_by_name(gi, hostname);
+	GeoIP_delete(gi);
+	if (isp == NULL) {
+		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
+		RETURN_FALSE;
+	}
+	RETURN_STRING((char*)isp, 1);
+}
+
 
 /*
  * Local variables:

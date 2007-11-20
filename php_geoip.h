@@ -51,6 +51,7 @@ PHP_FUNCTION(geoip_org_by_name);
 PHP_FUNCTION(geoip_record_by_name);
 PHP_FUNCTION(geoip_id_by_name);
 PHP_FUNCTION(geoip_region_by_name);
+PHP_FUNCTION(geoip_isp_by_name);
 PHP_FUNCTION(geoip_db_avail);
 PHP_FUNCTION(geoip_db_get_all_info);
 PHP_FUNCTION(geoip_db_filename);
