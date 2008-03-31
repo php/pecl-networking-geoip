@@ -19,8 +19,6 @@
 */
 
 
-#define EXTENSION_VERSION "1.0.2"
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -71,7 +69,7 @@ zend_module_entry geoip_module_entry = {
 	PHP_RSHUTDOWN(geoip),   
 	PHP_MINFO(geoip),
 #if ZEND_MODULE_API_NO >= 20010901
-	EXTENSION_VERSION, /* version number of the extension */
+	PHP_GEOIP_VERSION, /* version number of the extension */
 #endif
 	STANDARD_MODULE_PROPERTIES
 };
@@ -168,7 +166,7 @@ PHP_MINFO_FUNCTION(geoip)
 {
 	php_info_print_table_start();
 	php_info_print_table_header(2, "geoip support", "enabled");
-	php_info_print_table_row(2, "geoip extension version", EXTENSION_VERSION);
+	php_info_print_table_row(2, "geoip extension version", PHP_GEOIP_VERSION);
 	php_info_print_table_end();
 	DISPLAY_INI_ENTRIES();
 }
