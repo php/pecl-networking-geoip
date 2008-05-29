@@ -1,3 +1,7 @@
+1.0.3	2008-??-??
+
+ * Change license from PHP 3.0 to PHP 3.01 for Debian?
+
 1.0.2	2007-11-20
 
  * Added geoip_isp_by_name (patch by Yannick Gard)
