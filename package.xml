@@ -25,7 +25,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <release>stable</release>
   <api>stable</api>
  </stability>
- <license uri="http://www.php.net/license">PHP</license>
+ <license uri="http://www.php.net/license">PHP License</license>
  <notes>* Added geoip_isp_by_name (patch by Yannick Gard)
  </notes>
  <contents>
