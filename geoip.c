@@ -43,6 +43,7 @@ function_entry geoip_functions[] = {
 	PHP_FE(geoip_country_code_by_name,   NULL)
 	PHP_FE(geoip_country_code3_by_name,   NULL)
 	PHP_FE(geoip_country_name_by_name,   NULL)
+	PHP_FE(geoip_continent_code_by_name,   NULL)
 	PHP_FE(geoip_org_by_name,   NULL)
 	PHP_FE(geoip_record_by_name,   NULL)
 	PHP_FE(geoip_id_by_name,   NULL)
@@ -227,7 +228,7 @@ PHP_FUNCTION(geoip_db_get_all_info)
 			array_init(row);
 
 			add_assoc_bool(row, "available", GeoIP_db_avail(i));
-			add_assoc_string(row, "description", GeoIPDBDescription[i], 1);
+			add_assoc_string(row, "description", (char *)GeoIPDBDescription[i], 1);
 			add_assoc_string(row, "filename", GeoIPDBFileName[i], 1);
 
 			add_index_zval(return_value, i, row);
@@ -359,6 +360,36 @@ PHP_FUNCTION(geoip_country_name_by_name)
 		RETURN_FALSE;
 	}
 	RETURN_STRING((char*)country_name, 1);
+}
+/* }}} */
+
+/* {{{ proto string geoip_continent_code_by_name( string hostname )
+   Returns the Continent name found in the GeoIP Database */
+PHP_FUNCTION(geoip_continent_code_by_name)
+{
+	GeoIP * gi;
+	char * hostname = NULL;
+	int id;
+	int arglen;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &hostname, &arglen) == FAILURE) {
+		return;
+	}
+
+	if (GeoIP_db_avail(GEOIP_COUNTRY_EDITION)) {
+		gi = GeoIP_open_type(GEOIP_COUNTRY_EDITION, GEOIP_STANDARD);
+	}   else {
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_COUNTRY_EDITION]);
+		return;
+	}
+
+	id = GeoIP_id_by_name(gi, hostname);
+	GeoIP_delete(gi);
+	if (id == 0) {
+		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
+		RETURN_FALSE;
+	}
+	RETURN_STRING((char *)GeoIP_country_continent[id], 1);
 }
 /* }}} */
 

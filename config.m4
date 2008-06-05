@@ -55,6 +55,15 @@ if test "$PHP_GEOIP" != "no"; then
     -L$GEOIP_DIR/lib -lm -ldl
   ])
 
+  # Checking for GeoIP_continent_by_id in newer lib
+  PHP_CHECK_LIBRARY($LIBNAME,GeoIP_continent_by_id,
+  [
+    AC_DEFINE(HAVE_CONTINENT_BY_ID,1,[ ])
+  ],[
+  ],[
+    -L$GEOIP_DIR/lib -lm -ldl
+  ])
+
   # Check to see if we are using the LGPL library (version 1.4.0 and newer)
   AC_MSG_CHECKING([for LGPL compatible GeoIP libs])
   libgeoip_full_version=`find $GEOIP_DIR/lib/ -name libGeoIP.\*.\*.\*.\* | cut -d . -f 2-5`
