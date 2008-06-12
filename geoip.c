@@ -457,6 +457,8 @@ PHP_FUNCTION(geoip_record_by_name)
 	
 	array_init(return_value);
 	add_assoc_string(return_value, "country_code", (gir->country_code == NULL) ? "" : gir->country_code, 1);
+	add_assoc_string(return_value, "country_code3", (gir->country_code3 == NULL) ? "" : gir->country_code3, 1);
+	add_assoc_string(return_value, "country_name", (gir->country_name == NULL) ? "" : gir->country_name, 1);
 	add_assoc_string(return_value, "region", (gir->region == NULL) ? "" : gir->region, 1);
 	add_assoc_string(return_value, "city", (gir->city == NULL) ? "" : gir->city, 1);
 	add_assoc_string(return_value, "postal_code", (gir->postal_code == NULL) ? "" : gir->postal_code, 1);

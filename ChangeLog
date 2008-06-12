@@ -1,6 +1,9 @@
 1.0.3	2008-??-??
 
  * Change license from PHP 3.0 to PHP 3.01 for Debian?
+ * Added geoip_continent_code_by_name() to get continent instead of country
+ * Fixing a small casting issue (compiler warning)
+ * Fixing missing entries in geoip_record_by_name, bug #14131
 
 1.0.2	2007-11-20
 
