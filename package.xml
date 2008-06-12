@@ -15,18 +15,21 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <email>ohill@php.net</email>
   <active>yes</active>
  </lead>
- <date>2007-11-20</date>
+ <date>2008-06-12</date>
  <time>09:39:56</time>
  <version>
-  <release>1.0.2</release>
-  <api>1.0.2</api>
+  <release>1.0.3</release>
+  <api>1.0.3</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
- <notes>* Added geoip_isp_by_name (patch by Yannick Gard)
+ <notes>* Change license from PHP 3.0 to PHP 3.01 for Debian?
+* Added geoip_continent_code_by_name() to get continent instead of country
+* Fixing a small casting issue (compiler warning)
+* Fixing missing entries in geoip_record_by_name(), bug #14131
  </notes>
  <contents>
   <dir name="/">

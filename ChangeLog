@@ -1,4 +1,4 @@
-1.0.3	2008-??-??
+1.0.3	2008-06-12
 
  * Change license from PHP 3.0 to PHP 3.01 for Debian?
  * Added geoip_continent_code_by_name() to get continent instead of country
