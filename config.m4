@@ -10,7 +10,7 @@ dnl Make sure that the comment is aligned:
 if test "$PHP_GEOIP" != "no"; then
 
   # --with-geoip -> check with-path
-  SEARCH_PATH="/usr/local /usr /sw"
+  SEARCH_PATH="/usr/local /usr /sw /opt/local"
   SEARCH_FOR="/include/GeoIP.h"
   if test -r $PHP_GEOIP/$SEARCH_FOR; then
     GEOIP_DIR=$PHP_GEOIP
