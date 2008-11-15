@@ -399,7 +399,7 @@ PHP_FUNCTION(geoip_org_by_name)
 {
 	GeoIP * gi;
 	char * hostname = NULL;
-	const char * org;
+	char * org;
 	int arglen;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &hostname, &arglen) == FAILURE) {
@@ -419,7 +419,8 @@ PHP_FUNCTION(geoip_org_by_name)
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
 		RETURN_FALSE;
 	}
-	RETURN_STRING((char*)org, 1);
+	RETVAL_STRING(org, 1);
+	free(org);
 }
 /* }}} */
 
@@ -543,7 +544,7 @@ PHP_FUNCTION(geoip_isp_by_name)
 {
 	GeoIP * gi;
 	char * hostname = NULL;
-	const char * isp;
+	char * isp;
 	int arglen;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &hostname, &arglen) == FAILURE) {
@@ -563,7 +564,8 @@ PHP_FUNCTION(geoip_isp_by_name)
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
 		RETURN_FALSE;
 	}
-	RETURN_STRING((char*)isp, 1);
+	RETVAL_STRING(isp, 1);
+	free(isp);
 }
 
 
