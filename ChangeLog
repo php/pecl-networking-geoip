@@ -1,3 +1,8 @@
+1.0.4-dev
+
+ * Fix memleaks, bug #14851
+ * Small patch for MacPorts by jhohle
+
 1.0.3	2008-06-12
 
  * Change license from PHP 3.0 to PHP 3.01 for Debian?

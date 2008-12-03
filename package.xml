@@ -26,10 +26,8 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
- <notes>* Change license from PHP 3.0 to PHP 3.01 for Debian?
-* Added geoip_continent_code_by_name() to get continent instead of country
-* Fixing a small casting issue (compiler warning)
-* Fixing missing entries in geoip_record_by_name(), bug #14131
+ <notes>* Fix memleaks, bug #14851
+* Small patch for MacPorts by jhohle
  </notes>
  <contents>
   <dir name="/">
@@ -66,6 +64,23 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <providesextension>geoip</providesextension>
  <extsrcrelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.0.3</release>
+    <api>1.0.3</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2008-06-12</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>* Change license from PHP 3.0 to PHP 3.01 for Debian?
+* Added geoip_continent_code_by_name() to get continent instead of country
+* Fixing a small casting issue (compiler warning)
+* Fixing missing entries in geoip_record_by_name(), bug #14131
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.0.2</release>
