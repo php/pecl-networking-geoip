@@ -59,6 +59,10 @@ PHP_FUNCTION(geoip_isp_by_name);
 PHP_FUNCTION(geoip_db_avail);
 PHP_FUNCTION(geoip_db_get_all_info);
 PHP_FUNCTION(geoip_db_filename);
+#if LIBGEOIP_VERSION >= 1004001
+PHP_FUNCTION(geoip_region_name_by_code);
+PHP_FUNCTION(geoip_time_zone_by_country_and_region);
+#endif
 
 ZEND_BEGIN_MODULE_GLOBALS(geoip)
 	char* custom_directory;

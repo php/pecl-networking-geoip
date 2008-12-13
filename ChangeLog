@@ -2,6 +2,8 @@
 
  * Fix memleaks, bug #14851
  * Small patch for MacPorts by jhohle
+ * Add geoip_time_zone_by_country_and_region() and geoip_region_name_by_code() (thanks to Sid Dunayer)
+ * Add continent_code field for City Database, only if using GeoIP lib 1.4.3 or newer
 
 1.0.3	2008-06-12
 

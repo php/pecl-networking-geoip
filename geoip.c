@@ -52,6 +52,10 @@ function_entry geoip_functions[] = {
 	PHP_FE(geoip_db_avail,	NULL)
 	PHP_FE(geoip_db_get_all_info,	NULL)
 	PHP_FE(geoip_db_filename,	NULL)
+#if LIBGEOIP_VERSION >= 1004001
+	PHP_FE(geoip_region_name_by_code,	NULL)
+	PHP_FE(geoip_time_zone_by_country_and_region,	NULL)
+#endif
 	{NULL, NULL, NULL}
 };
 /* }}} */
@@ -457,6 +461,9 @@ PHP_FUNCTION(geoip_record_by_name)
 	}
 	
 	array_init(return_value);
+#if LIBGEOIP_VERSION >= 1004003
+	add_assoc_string(return_value, "continent_code", (gir->continent_code == NULL) ? "" : gir->continent_code, 1);
+#endif
 	add_assoc_string(return_value, "country_code", (gir->country_code == NULL) ? "" : gir->country_code, 1);
 	add_assoc_string(return_value, "country_code3", (gir->country_code3 == NULL) ? "" : gir->country_code3, 1);
 	add_assoc_string(return_value, "country_name", (gir->country_name == NULL) ? "" : gir->country_name, 1);
@@ -467,7 +474,7 @@ PHP_FUNCTION(geoip_record_by_name)
 	add_assoc_double(return_value, "longitude", gir->longitude);
 	add_assoc_long(return_value, "dma_code", gir->dma_code);
 	add_assoc_long(return_value, "area_code", gir->area_code);
-	
+
 	GeoIPRecord_delete(gir);
 }
 /* }}} */
@@ -568,6 +575,65 @@ PHP_FUNCTION(geoip_isp_by_name)
 	free(isp);
 }
 
+#if LIBGEOIP_VERSION >= 1004001
+/* {{{ proto string geoip_region_name_by_code( string country_code, string region_code )
+   Returns the region name for some country code and region code combo */
+PHP_FUNCTION(geoip_region_name_by_code)
+{
+	GeoIP * gi;
+	char * country_code = NULL;
+	char * region_code = NULL;
+	const char * region_name;
+	int countrylen, regionlen;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &country_code, &countrylen, &region_code, &regionlen) == FAILURE) {
+		return;
+	}
+
+	if (!countrylen || !regionlen) {
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "You need to specify the country and region codes.");
+		RETURN_FALSE;
+	}
+	
+	region_name = GeoIP_region_name_by_code(country_code, region_code);
+	if (region_name == NULL) {
+		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Region name not found for %s/%s", country_code, region_code);
+		RETURN_FALSE;
+	}
+	RETURN_STRING((char*)region_name, 1);
+}
+/* }}} */
+#endif
+
+#if LIBGEOIP_VERSION >= 1004001
+/* {{{ proto string geoip_time_zone_by_country_and_region( string country, string region )
+   Returns the time zone for some country code and region code combo */
+PHP_FUNCTION(geoip_time_zone_by_country_and_region)
+{
+	GeoIP * gi;
+	char * country = NULL;
+	char * region = NULL;
+	const char * timezone;
+	int countrylen, arg2len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|s", &country, &countrylen, &region, &arg2len) == FAILURE) {
+		return;
+	}
+
+	if (!countrylen) {
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "You need to specify at least the country code.");
+		RETURN_FALSE;
+	}
+	
+	timezone = GeoIP_time_zone_by_country_and_region(country, region);
+	if (timezone == NULL) {
+		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Timezone not found for %s/%s", country, region);
+		RETURN_FALSE;
+	}
+	RETURN_STRING((char*)timezone, 1);
+}
+/* }}} */
+#endif
 
 /*
  * Local variables:
