@@ -172,6 +172,7 @@ PHP_MINFO_FUNCTION(geoip)
 	php_info_print_table_start();
 	php_info_print_table_header(2, "geoip support", "enabled");
 	php_info_print_table_row(2, "geoip extension version", PHP_GEOIP_VERSION);
+	php_info_print_table_row(2, "geoip library version", LIBGEOIP_VERSION);
 	php_info_print_table_end();
 	DISPLAY_INI_ENTRIES();
 }
@@ -472,7 +473,11 @@ PHP_FUNCTION(geoip_record_by_name)
 	add_assoc_string(return_value, "postal_code", (gir->postal_code == NULL) ? "" : gir->postal_code, 1);
 	add_assoc_double(return_value, "latitude", gir->latitude);
 	add_assoc_double(return_value, "longitude", gir->longitude);
+#if LIBGEOIP_VERSION >= 1004005
+	add_assoc_long(return_value, "dma_code", gir->metro_code);
+#else
 	add_assoc_long(return_value, "dma_code", gir->dma_code);
+#endif
 	add_assoc_long(return_value, "area_code", gir->area_code);
 
 	GeoIPRecord_delete(gir);
