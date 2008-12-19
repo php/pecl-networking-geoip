@@ -15,10 +15,10 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <email>ohill@php.net</email>
   <active>yes</active>
  </lead>
- <date>2008-06-12</date>
+ <date>2008-12-19</date>
  <time>09:39:56</time>
  <version>
-  <release>1.0.4-dev</release>
+  <release>1.0.4</release>
   <api>1.0.3</api>
  </version>
  <stability>

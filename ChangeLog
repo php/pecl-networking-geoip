@@ -1,4 +1,4 @@
-1.0.4-dev
+1.0.4	2008-12-19
 
  * Fix memleaks, bug #14851
  * Small patch for MacPorts by jhohle
