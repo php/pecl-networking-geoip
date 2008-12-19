@@ -1,3 +1,7 @@
+1.0.5	2008-12-19
+
+ * Small bug in phpinfo() when printing version number could crash PHP.
+
 1.0.4	2008-12-19
 
  * Fix memleaks, bug #14851
