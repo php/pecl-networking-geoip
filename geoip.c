@@ -169,10 +169,13 @@ PHP_RSHUTDOWN_FUNCTION(geoip)
  */
 PHP_MINFO_FUNCTION(geoip)
 {
+	char buf[32];
+	
 	php_info_print_table_start();
 	php_info_print_table_header(2, "geoip support", "enabled");
 	php_info_print_table_row(2, "geoip extension version", PHP_GEOIP_VERSION);
-	php_info_print_table_row(2, "geoip library version", LIBGEOIP_VERSION);
+	snprintf(buf, sizeof(buf), "%d", LIBGEOIP_VERSION);
+	php_info_print_table_row(2, "geoip library version", buf);
 	php_info_print_table_end();
 	DISPLAY_INI_ENTRIES();
 }
