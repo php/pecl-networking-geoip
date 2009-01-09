@@ -66,11 +66,13 @@ if test "$PHP_GEOIP" != "no"; then
 
   # Check to see if we are using the LGPL library (version 1.4.0 and newer)
   AC_MSG_CHECKING([for LGPL compatible GeoIP libs])
-  libgeoip_full_version=`find $GEOIP_DIR/lib/ -name libGeoIP.\*.\*.\*.\* | cut -d . -f 2-5`
-  ac_IFS=$IFS
-  IFS="."
-  set $libgeoip_full_version
-  IFS=$ac_IFS
+  libgeoip_full_version=`find $GEOIP_DIR/lib/ -name libGeoIP.\*.\*.\*.\* | cut -d . -f 2-5 | sort`
+  for lines in $libgeoip_full_version; do
+    ac_IFS=$IFS
+    IFS="."
+    set $lines
+    IFS=$ac_IFS
+  done
 
   # Version after the suffix (eg: .so.1.4.0)
   if test "[$]1" = "$SHLIB_SUFFIX_NAME"; then
