@@ -18,7 +18,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <date>2008-12-19</date>
  <time>09:39:56</time>
  <version>
-  <release>1.0.5</release>
+  <release>1.0.6-dev</release>
   <api>1.0.3</api>
  </version>
  <stability>
@@ -67,6 +67,20 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <providesextension>geoip</providesextension>
  <extsrcrelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.0.5</release>
+    <api>1.0.3</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2008-12-19</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>* Small bug in phpinfo() when printing version number could crash PHP.
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.0.4</release>
