@@ -1,3 +1,7 @@
+1.0.6	2009-01-20
+
+ * Fixing compile bug when multiple GeoIP libs are installed, bug #15372
+
 1.0.5	2008-12-19
 
  * Small bug in phpinfo() when printing version number could crash PHP.

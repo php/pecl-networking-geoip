@@ -2,7 +2,7 @@
   +----------------------------------------------------------------------+
   | PHP Version 5                                                        |
   +----------------------------------------------------------------------+
-  | Copyright (c) 1997-2008 The PHP Group                                |
+  | Copyright (c) 1997-2009 The PHP Group                                |
   +----------------------------------------------------------------------+
   | This source file is subject to version 3.01 of the PHP license,      |
   | that is bundled with this package in the file LICENSE, and is        |
@@ -24,7 +24,7 @@
 extern zend_module_entry geoip_module_entry;
 #define phpext_geoip_ptr &geoip_module_entry
 
-#define PHP_GEOIP_VERSION "1.0.6-dev"
+#define PHP_GEOIP_VERSION "1.0.6"
 
 #ifdef PHP_WIN32
 #define PHP_GEOIP_API __declspec(dllexport)
