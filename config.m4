@@ -66,7 +66,7 @@ if test "$PHP_GEOIP" != "no"; then
 
   # Check to see if we are using the LGPL library (version 1.4.0 and newer)
   AC_MSG_CHECKING([for LGPL compatible GeoIP libs])
-  libgeoip_full_version=`find $GEOIP_DIR/lib/ -name libGeoIP.\*.\*.\*.\* | cut -d . -f 2-5 | sort`
+  libgeoip_full_version=`find $GEOIP_DIR/$PHP_LIBDIR/ -name libGeoIP.\*.\*.\*.\* | cut -d . -f 2-5 | sort`
   for lines in $libgeoip_full_version; do
     ac_IFS=$IFS
     IFS="."
