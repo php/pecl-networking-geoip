@@ -64,6 +64,11 @@ if test "$PHP_GEOIP" != "no"; then
     -L$GEOIP_DIR/lib -lm -ldl
   ])
 
+  # odd PHP4 fix
+  if test "x$PHP_LIBDIR" = "x"; then
+    PHP_LIBDIR=lib
+  fi 
+
   # Check to see if we are using the LGPL library (version 1.4.0 and newer)
   AC_MSG_CHECKING([for LGPL compatible GeoIP libs])
   libgeoip_full_version=`find $GEOIP_DIR/$PHP_LIBDIR/ -name libGeoIP.\*.\*.\*.\* | cut -d . -f 2-5 | sort`
@@ -81,6 +86,12 @@ if test "$PHP_GEOIP" != "no"; then
   else
     LIBGEOIP_VERSION=`expr [$]1 \* 1000000 + [$]2 \* 1000 + [$]3`
   fi
+
+  # Just in case it didn't work, fail
+  if test "x$LIBGEOIP_VERSION" = "x"; then
+    AC_MSG_RESULT([cannot detect])
+    AC_MSG_ERROR([For some reason, libGeoIP is installed, but I cannot determine the version used])
+  fi 
 
   if test "$LIBGEOIP_VERSION" -lt "1004000"; then
     AC_MSG_RESULT([wrong version])
