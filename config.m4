@@ -32,6 +32,11 @@ if test "$PHP_GEOIP" != "no"; then
   # --with-geoip -> add include path
   PHP_ADD_INCLUDE($GEOIP_DIR/include)
 
+  # odd PHP4 fix
+  if test "x$PHP_LIBDIR" = "x"; then
+    PHP_LIBDIR=lib
+  fi 
+
   # --with-geoip -> check for lib and symbol presence
   LIBNAME=GeoIP # you may want to change this
   LIBSYMBOL=GeoIP_open # you most likely want to change this
@@ -43,7 +48,7 @@ if test "$PHP_GEOIP" != "no"; then
   ],[
     AC_MSG_ERROR([wrong geoip lib version or lib not found])
   ],[
-    -L$GEOIP_DIR/lib -lm -ldl
+    -L$GEOIP_DIR/$PHP_LIBDIR -lm
   ])
 
   # Checking for GeoIP_setup_custom_directory in newer lib
@@ -52,7 +57,7 @@ if test "$PHP_GEOIP" != "no"; then
     AC_DEFINE(HAVE_CUSTOM_DIRECTORY,1,[ ])
   ],[
   ],[
-    -L$GEOIP_DIR/lib -lm -ldl
+    -L$GEOIP_DIR/$PHP_LIBDIR -lm
   ])
 
   # Checking for GeoIP_continent_by_id in newer lib
@@ -61,13 +66,8 @@ if test "$PHP_GEOIP" != "no"; then
     AC_DEFINE(HAVE_CONTINENT_BY_ID,1,[ ])
   ],[
   ],[
-    -L$GEOIP_DIR/lib -lm -ldl
+    -L$GEOIP_DIR/$PHP_LIBDIR -lm
   ])
-
-  # odd PHP4 fix
-  if test "x$PHP_LIBDIR" = "x"; then
-    PHP_LIBDIR=lib
-  fi 
 
   # Check to see if we are using the LGPL library (version 1.4.0 and newer)
   AC_MSG_CHECKING([for LGPL compatible GeoIP libs])
