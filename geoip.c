@@ -605,7 +605,6 @@ PHP_FUNCTION(geoip_region_name_by_code)
 	
 	region_name = GeoIP_region_name_by_code(country_code, region_code);
 	if (region_name == NULL) {
-		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Region name not found for %s/%s", country_code, region_code);
 		RETURN_FALSE;
 	}
 	RETURN_STRING((char*)region_name, 1);
@@ -635,7 +634,6 @@ PHP_FUNCTION(geoip_time_zone_by_country_and_region)
 	
 	timezone = GeoIP_time_zone_by_country_and_region(country, region);
 	if (timezone == NULL) {
-		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Timezone not found for %s/%s", country, region);
 		RETURN_FALSE;
 	}
 	RETURN_STRING((char*)timezone, 1);

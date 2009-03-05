@@ -22,8 +22,6 @@ bool(false)
 
 Warning: geoip_region_name_by_code(): You need to specify the country and region codes. in %s on line %d
 bool(false)
-
-Notice: geoip_region_name_by_code(): Region name not found for %s in %s on line %d
 bool(false)
 
 Warning: geoip_region_name_by_code(): You need to specify the country and region codes. in %s on line %d
@@ -31,6 +29,4 @@ bool(false)
 
 Warning: geoip_region_name_by_code(): You need to specify the country and region codes. in %s on line %d
 bool(false)
-
-Notice: geoip_region_name_by_code(): Region name not found for %s in %s on line %d
 bool(false)
