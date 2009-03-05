@@ -55,15 +55,27 @@ if test "$PHP_GEOIP" != "no"; then
   PHP_CHECK_LIBRARY($LIBNAME,GeoIP_setup_custom_directory,
   [
     AC_DEFINE(HAVE_CUSTOM_DIRECTORY,1,[ ])
+    MIN_GEOIP_VERSION=1004001
   ],[
   ],[
     -L$GEOIP_DIR/$PHP_LIBDIR -lm
   ])
 
+  # Checking for GeoIP_set_charset in newer lib
+  PHP_CHECK_LIBRARY($LIBNAME,GeoIP_set_charset,
+  [
+    AC_DEFINE(HAVE_SET_CHARSET,1,[ ])
+    MIN_GEOIP_VERSION=1004003
+  ],[
+  ],[
+    -L$GEOIP_DIR/$PHP_LIBDIR -lm
+  ])
+  
   # Checking for GeoIP_continent_by_id in newer lib
   PHP_CHECK_LIBRARY($LIBNAME,GeoIP_continent_by_id,
   [
     AC_DEFINE(HAVE_CONTINENT_BY_ID,1,[ ])
+    MIN_GEOIP_VERSION=1004005
   ],[
   ],[
     -L$GEOIP_DIR/$PHP_LIBDIR -lm
@@ -87,10 +99,17 @@ if test "$PHP_GEOIP" != "no"; then
     LIBGEOIP_VERSION=`expr [$]1 \* 1000000 + [$]2 \* 1000 + [$]3`
   fi
 
-  # Just in case it didn't work, fail
+  # Just in case it didn't work, try alternate method, or fail
   if test "x$LIBGEOIP_VERSION" = "x"; then
     AC_MSG_RESULT([cannot detect])
-    AC_MSG_ERROR([For some reason, libGeoIP is installed, but I cannot determine the version used])
+    
+    # Alternate method based on library capabilities (not 100% acurate)
+    AC_MSG_CHECKING([library features to determine version (not acurate)])
+    if test "x$MIN_GEOIP_VERSION" = "x"; then
+        AC_MSG_ERROR([For some reason, libGeoIP is installed, but I cannot determine the version used])
+    else
+        LIBGEOIP_VERSION=$MIN_GEOIP_VERSION
+    fi
   fi 
 
   if test "$LIBGEOIP_VERSION" -lt "1004000"; then
