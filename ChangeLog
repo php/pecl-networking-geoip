@@ -1,3 +1,9 @@
+1.0.7	2009-03-11
+
+ * Do not issue a NOTICE when values don't exist for timezone and region name (as added in 1.0.4)
+ * Fix a compile issue on FreeBSD
+ * Try to be bulletproof on library features detection.
+
 1.0.6	2009-01-20
 
  * Fixing compile bug when multiple GeoIP libs are installed, bug #15372

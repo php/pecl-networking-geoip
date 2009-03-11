@@ -15,10 +15,10 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <email>ohill@php.net</email>
   <active>yes</active>
  </lead>
- <date>2009-01-20</date>
+ <date>2009-03-11</date>
  <time>09:39:56</time>
  <version>
-  <release>1.0.7-dev</release>
+  <release>1.0.7</release>
   <api>1.0.3</api>
  </version>
  <stability>
@@ -26,7 +26,9 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
- <notes>* Fixing compile bug when multiple GeoIP libs are installed, bug #15372.
+ <notes>* Do not issue a NOTICE when values don't exist for timezone and region name (as added in 1.0.4)
+* Fix a compile issue on FreeBSD
+* Try to be bulletproof on library features detection.
  </notes>
  <contents>
   <dir name="/">
@@ -67,6 +69,22 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <providesextension>geoip</providesextension>
  <extsrcrelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.0.7</release>
+    <api>1.0.3</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2009-03-11</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>* Do not issue a NOTICE when values don't exist for timezone and region name (as added in 1.0.4)
+* Fix a compile issue on FreeBSD
+* Try to be bulletproof on library features detection.
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.0.6</release>
