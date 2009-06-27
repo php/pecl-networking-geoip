@@ -18,7 +18,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <date>2009-03-11</date>
  <time>09:39:56</time>
  <version>
-  <release>1.0.7</release>
+  <release>1.0.8-dev</release>
   <api>1.0.3</api>
  </version>
  <stability>
@@ -26,9 +26,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
- <notes>* Do not issue a NOTICE when values don't exist for timezone and region name (as added in 1.0.4)
-* Fix a compile issue on FreeBSD
-* Try to be bulletproof on library features detection.
+ <notes>* Windows support
  </notes>
  <contents>
   <dir name="/">
@@ -51,6 +49,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
    </dir> <!-- //tests -->
    <file name="ChangeLog" role="doc" />
    <file name="config.m4" role="src" />
+   <file name="config.w32" role="src" />
    <file name="geoip.c" role="src" />
    <file name="php_geoip.h" role="src" />
    <file name="README" role="doc" />
