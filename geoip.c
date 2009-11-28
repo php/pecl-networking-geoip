@@ -588,7 +588,6 @@ PHP_FUNCTION(geoip_isp_by_name)
    Returns the region name for some country code and region code combo */
 PHP_FUNCTION(geoip_region_name_by_code)
 {
-	GeoIP * gi;
 	char * country_code = NULL;
 	char * region_code = NULL;
 	const char * region_name;
@@ -617,7 +616,6 @@ PHP_FUNCTION(geoip_region_name_by_code)
    Returns the time zone for some country code and region code combo */
 PHP_FUNCTION(geoip_time_zone_by_country_and_region)
 {
-	GeoIP * gi;
 	char * country = NULL;
 	char * region = NULL;
 	const char * timezone;
