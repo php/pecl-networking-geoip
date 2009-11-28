@@ -5,7 +5,7 @@ ARG_WITH("geoip", "GeoIP Support", "no");
 
 if (PHP_GEOIP == "yes") {
 	if (CHECK_HEADER_ADD_INCLUDE("geoip.h", "CFLAGS_GEOIP", PHP_GEOIP +  ";" + PHP_PHP_BUILD + "\\include\\geoip") &&
-		CHECK_LIB("GeoIP.lib", "geoip", PHP_GEOIP)) {
+		CHECK_LIB("geoip_a.lib;GeoIP.lib", "geoip", PHP_GEOIP)) {
 		AC_DEFINE('HAVE_GEOIP', 1, 'Have GeoIP support', false);
 		AC_DEFINE('LIBGEOIP_VERSION', 1004006, 'GeoIP Version');
 		EXTENSION("geoip", "geoip.c");
