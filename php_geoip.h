@@ -47,9 +47,10 @@ PHP_MINFO_FUNCTION(geoip);
 
 
 PHP_FUNCTION(geoip_database_info);
-PHP_FUNCTION(geoip_country_code_by_name);
-PHP_FUNCTION(geoip_country_code3_by_name);
-PHP_FUNCTION(geoip_country_name_by_name);
+#define GEOIPDEF(php_func, c_func, db_type) \
+PHP_FUNCTION(php_func);
+#include "geoip.def"
+#undef GEOIPDEF
 PHP_FUNCTION(geoip_continent_code_by_name);
 PHP_FUNCTION(geoip_org_by_name);
 PHP_FUNCTION(geoip_record_by_name);
