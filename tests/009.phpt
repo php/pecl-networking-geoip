@@ -5,7 +5,7 @@ Calling geoip_db_avail() with a non-existant database type within bound.
 --FILE--
 <?php
 
-var_dump( geoip_db_avail(14) );
+var_dump( geoip_db_avail(0) );
 
 ?>
 --EXPECT--

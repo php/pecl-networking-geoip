@@ -5,7 +5,7 @@ Calling geoip_database_info() with a non-existant database type within bound.
 --FILE--
 <?php
 
-geoip_database_info(14);
+geoip_database_info(0);
 
 ?>
 --EXPECTF--
