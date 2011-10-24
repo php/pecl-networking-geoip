@@ -15,10 +15,10 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <email>ohill@php.net</email>
   <active>yes</active>
  </lead>
- <date>2009-03-11</date>
+ <date>2011-10-23</date>
  <time>09:39:56</time>
  <version>
-  <release>1.0.8-dev</release>
+  <release>1.0.8</release>
   <api>1.0.3</api>
  </version>
  <stability>
@@ -27,6 +27,9 @@ http://pear.php.net/dtd/package-2.0.xsd">
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>* Windows support
+* Fix segfault with newer geoip libraries and geoip_db_get_all_info() (bug #60066)
+* Use X-Macros for repeated code
+* Updated tests
  </notes>
  <contents>
   <dir name="/">
@@ -50,6 +53,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
    <file name="ChangeLog" role="doc" />
    <file name="config.m4" role="src" />
    <file name="config.w32" role="src" />
+   <file name="geoip.def" role="src" />
    <file name="geoip.c" role="src" />
    <file name="php_geoip.h" role="src" />
    <file name="README" role="doc" />
@@ -68,6 +72,23 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <providesextension>geoip</providesextension>
  <extsrcrelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.0.8</release>
+    <api>1.0.3</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2011-10-23</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>* Windows support
+* Fix segfault with newer geoip libraries and geoip_db_get_all_info() (bug #60066)
+* Use X-Macros for repeated code
+* Updated tests
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.0.7</release>
