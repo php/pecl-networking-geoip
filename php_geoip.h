@@ -64,9 +64,13 @@ PHP_FUNCTION(geoip_db_filename);
 PHP_FUNCTION(geoip_region_name_by_code);
 PHP_FUNCTION(geoip_time_zone_by_country_and_region);
 #endif
+#ifdef HAVE_CUSTOM_DIRECTORY
+PHP_FUNCTION(geoip_setup_custom_directory);
+#endif
 
 ZEND_BEGIN_MODULE_GLOBALS(geoip)
 	char* custom_directory;
+	int set_runtime_custom_directory;
 ZEND_END_MODULE_GLOBALS(geoip)
 
 #ifdef ZTS

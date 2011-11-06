@@ -57,6 +57,9 @@ zend_function_entry geoip_functions[] = {
 	PHP_FE(geoip_region_name_by_code,	NULL)
 	PHP_FE(geoip_time_zone_by_country_and_region,	NULL)
 #endif
+#ifdef HAVE_CUSTOM_DIRECTORY
+    PHP_FE(geoip_setup_custom_directory,	NULL)
+#endif
 	{NULL, NULL, NULL}
 };
 /* }}} */
@@ -99,6 +102,7 @@ PHP_INI_END()
 static void php_geoip_init_globals(zend_geoip_globals *geoip_globals)
 {
 	geoip_globals->custom_directory = NULL;
+	geoip_globals->set_runtime_custom_directory = 0;
 }
 /* }}} */
 
@@ -162,6 +166,20 @@ PHP_RINIT_FUNCTION(geoip)
  */
 PHP_RSHUTDOWN_FUNCTION(geoip)
 {
+#ifdef HAVE_CUSTOM_DIRECTORY
+	/* If we have a custom directory (and have support from   */
+	/* libgeoip, we reset the extension to default directory) */
+	if (GEOIP_G(set_runtime_custom_directory)) {
+		if (GeoIPDBFileName != NULL) {
+			free(GeoIPDBFileName);
+			GeoIPDBFileName = NULL;
+		}
+
+		GeoIP_setup_custom_directory(GEOIP_G(custom_directory));
+		_GeoIP_setup_dbfilename();
+	}
+#endif
+	
 	return SUCCESS;
 }
 /* }}} */
@@ -575,6 +593,31 @@ PHP_FUNCTION(geoip_time_zone_by_country_and_region)
 		RETURN_FALSE;
 	}
 	RETURN_STRING((char*)timezone, 1);
+}
+/* }}} */
+#endif
+
+#ifdef HAVE_CUSTOM_DIRECTORY
+/* {{{ proto void geoip_setup_custom_directory( string directory )
+   Sets the custom directory for GeoIP databases */
+PHP_FUNCTION(geoip_setup_custom_directory)
+{
+	char * dir = NULL;
+	int dirlen;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dir, &dirlen) == FAILURE) {
+		return;
+	}
+
+	GEOIP_G(set_runtime_custom_directory) = 1;
+
+	if (GeoIPDBFileName != NULL) {
+		free(GeoIPDBFileName);
+		GeoIPDBFileName = NULL;
+	}
+
+	GeoIP_setup_custom_directory(dir);
+	_GeoIP_setup_dbfilename();
 }
 /* }}} */
 #endif
