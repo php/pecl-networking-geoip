@@ -1,3 +1,15 @@
+1.0.9-dev 2012-xx-xx
+
+ * Add geoip_setup_custom_directory() to setup custom directories per request.
+ * Remove E_NOTICES for IPs not found in database.
+ 
+1.0.8	2011-10-23
+
+ * Windows support
+ * Fix segfault with newer geoip libraries and geoip_db_get_all_info() (bug #60066)
+ * Use X-Macros for repeated code
+ * Updated tests
+
 1.0.7	2009-03-11
 
  * Do not issue a NOTICE when values don't exist for timezone and region name (as added in 1.0.4)

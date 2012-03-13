@@ -15,10 +15,10 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <email>ohill@php.net</email>
   <active>yes</active>
  </lead>
- <date>2011-10-23</date>
+ <date>2012-03-13</date>
  <time>09:39:56</time>
  <version>
-  <release>1.0.8</release>
+  <release>1.0.9-dev</release>
   <api>1.0.3</api>
  </version>
  <stability>
@@ -26,10 +26,8 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
- <notes>* Windows support
-* Fix segfault with newer geoip libraries and geoip_db_get_all_info() (bug #60066)
-* Use X-Macros for repeated code
-* Updated tests
+ <notes>* Add geoip_setup_custom_directory() to setup custom directories per request.
+* Remove E_NOTICES for IPs not found in database.
  </notes>
  <contents>
   <dir name="/">
@@ -49,6 +47,8 @@ http://pear.php.net/dtd/package-2.0.xsd">
     <file name="014.phpt" role="test" />
     <file name="015.phpt" role="test" />
     <file name="016.phpt" role="test" />
+    <file name="017.phpt" role="test" />
+    <file name="018.phpt" role="test" />
    </dir> <!-- //tests -->
    <file name="ChangeLog" role="doc" />
    <file name="config.m4" role="src" />
@@ -72,6 +72,21 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <providesextension>geoip</providesextension>
  <extsrcrelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.0.9-dev</release>
+    <api>1.0.3</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2012-03-13</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>* Add geoip_setup_custom_directory() to setup custom directories per request.
+* Remove E_NOTICES for IPs not found in database.
+   </notes>
+  </release>
   <release>
    <version>
     <release>1.0.8</release>
