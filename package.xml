@@ -28,6 +28,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>* Add geoip_setup_custom_directory() to setup custom directories per request.
 * Remove E_NOTICES for IPs not found in database.
+* Adding geoip_asnum_by_name() and geoip_domain_by_name().
  </notes>
  <contents>
   <dir name="/">

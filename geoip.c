@@ -60,6 +60,8 @@ zend_function_entry geoip_functions[] = {
 #ifdef HAVE_CUSTOM_DIRECTORY
     PHP_FE(geoip_setup_custom_directory,	NULL)
 #endif
+	PHP_FE(geoip_asnum_by_name,   NULL)
+	PHP_FE(geoip_domain_by_name,   NULL)
 	{NULL, NULL, NULL}
 };
 /* }}} */
@@ -133,7 +135,7 @@ PHP_MINIT_FUNCTION(geoip)
 	REGISTER_LONG_CONSTANT("GEOIP_ASNUM_EDITION",       GEOIP_ASNUM_EDITION,       CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("GEOIP_NETSPEED_EDITION",    GEOIP_NETSPEED_EDITION,    CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("GEOIP_DOMAIN_EDITION",      GEOIP_DOMAIN_EDITION,      CONST_CS | CONST_PERSISTENT);
-	
+
 	/* For netspeed constants */
 	REGISTER_LONG_CONSTANT("GEOIP_UNKNOWN_SPEED",       GEOIP_UNKNOWN_SPEED,       CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("GEOIP_DIALUP_SPEED",        GEOIP_DIALUP_SPEED,        CONST_CS | CONST_PERSISTENT);
@@ -384,6 +386,66 @@ PHP_FUNCTION(geoip_org_by_name)
 	}
 
 	org = GeoIP_org_by_name(gi, hostname);
+	GeoIP_delete(gi);
+	if (org == NULL) {
+		RETURN_FALSE;
+	}
+	RETVAL_STRING(org, 1);
+	free(org);
+}
+/* }}} */
+
+/* {{{ proto string geoip_asnum_by_name( string hostname )
+   Returns the Domain Name found in the GeoIP Database */
+PHP_FUNCTION(geoip_asnum_by_name)
+{
+	GeoIP * gi;
+	char * hostname = NULL;
+	char * org;
+	int arglen;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &hostname, &arglen) == FAILURE) {
+		return;
+	}
+
+	if (GeoIP_db_avail(GEOIP_ASNUM_EDITION)) {
+		gi = GeoIP_open_type(GEOIP_ASNUM_EDITION, GEOIP_STANDARD);
+	}   else {
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_ASNUM_EDITION]);
+		return;
+	}
+
+	org = GeoIP_name_by_name(gi, hostname);
+	GeoIP_delete(gi);
+	if (org == NULL) {
+		RETURN_FALSE;
+	}
+	RETVAL_STRING(org, 1);
+	free(org);
+}
+/* }}} */
+
+/* {{{ proto string geoip_domain_by_name( string hostname )
+   Returns the Domain Name found in the GeoIP Database */
+PHP_FUNCTION(geoip_domain_by_name)
+{
+	GeoIP * gi;
+	char * hostname = NULL;
+	char * org;
+	int arglen;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &hostname, &arglen) == FAILURE) {
+		return;
+	}
+
+	if (GeoIP_db_avail(GEOIP_DOMAIN_EDITION)) {
+		gi = GeoIP_open_type(GEOIP_DOMAIN_EDITION, GEOIP_STANDARD);
+	}   else {
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_DOMAIN_EDITION]);
+		return;
+	}
+
+	org = GeoIP_name_by_name(gi, hostname);
 	GeoIP_delete(gi);
 	if (org == NULL) {
 		RETURN_FALSE;
