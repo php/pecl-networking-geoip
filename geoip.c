@@ -25,6 +25,9 @@
 
 #include <GeoIP.h>
 #include <GeoIPCity.h>
+#ifdef PHP_WIN32
+#include <GeoIP_internal.h>
+#endif
 
 #include "php.h"
 #include "php_ini.h"
