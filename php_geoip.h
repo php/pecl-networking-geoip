@@ -69,6 +69,9 @@ PHP_FUNCTION(geoip_setup_custom_directory);
 #endif
 PHP_FUNCTION(geoip_asnum_by_name);
 PHP_FUNCTION(geoip_domain_by_name);
+#if LIBGEOIP_VERSION >= 1004008
+PHP_FUNCTION(geoip_netspeedcell_by_name);
+#endif
 
 ZEND_BEGIN_MODULE_GLOBALS(geoip)
 	char* custom_directory;

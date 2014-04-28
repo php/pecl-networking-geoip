@@ -65,6 +65,9 @@ zend_function_entry geoip_functions[] = {
 #endif
 	PHP_FE(geoip_asnum_by_name,   NULL)
 	PHP_FE(geoip_domain_by_name,   NULL)
+#if LIBGEOIP_VERSION >= 1004008
+	PHP_FE(geoip_netspeedcell_by_name, NULL)
+#endif
 	{NULL, NULL, NULL}
 };
 /* }}} */
@@ -138,6 +141,9 @@ PHP_MINIT_FUNCTION(geoip)
 	REGISTER_LONG_CONSTANT("GEOIP_ASNUM_EDITION",       GEOIP_ASNUM_EDITION,       CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("GEOIP_NETSPEED_EDITION",    GEOIP_NETSPEED_EDITION,    CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("GEOIP_DOMAIN_EDITION",      GEOIP_DOMAIN_EDITION,      CONST_CS | CONST_PERSISTENT);
+#if LIBGEOIP_VERSION >= 1004008
+	REGISTER_LONG_CONSTANT("GEOIP_NETSPEED_EDITION_REV1",GEOIP_NETSPEED_EDITION_REV1,CONST_CS | CONST_PERSISTENT);
+#endif
 
 	/* For netspeed constants */
 	REGISTER_LONG_CONSTANT("GEOIP_UNKNOWN_SPEED",       GEOIP_UNKNOWN_SPEED,       CONST_CS | CONST_PERSISTENT);
@@ -459,6 +465,39 @@ PHP_FUNCTION(geoip_domain_by_name)
 	free(org);
 }
 /* }}} */
+
+#if LIBGEOIP_VERSION >= 1004008
+/* {{{ proto string geoip_netspeedcell_by_name( string hostname )
+   Returns the Net Speed found in the GeoIP Database */
+PHP_FUNCTION(geoip_netspeedcell_by_name)
+{
+	GeoIP * gi;
+	char * hostname = NULL;
+	char * org;
+	int arglen;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &hostname, &arglen) == FAILURE) {
+		return;
+	}
+
+	if (GeoIP_db_avail(GEOIP_NETSPEED_EDITION_REV1)) {
+		gi = GeoIP_open_type(GEOIP_NETSPEED_EDITION_REV1, GEOIP_STANDARD);
+	}   else {
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_NETSPEED_EDITION_REV1]);
+		return;
+	}
+
+	org = GeoIP_name_by_name(gi, hostname);
+	GeoIP_delete(gi);
+	if (org == NULL) {
+		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
+		RETURN_FALSE;
+	}
+	RETVAL_STRING(org, 1);
+	free(org);
+}
+/* }}} */
+#endif
 
 /* {{{ proto array geoip_record_by_name( string hostname )
    Returns the detailed City information found in the GeoIP Database */

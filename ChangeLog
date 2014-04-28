@@ -1,7 +1,9 @@
-1.0.9-dev 2012-xx-xx
+1.1.0-dev 2012-xx-xx
 
  * Add geoip_setup_custom_directory() to setup custom directories per request.
  * Remove E_NOTICES for IPs not found in database.
+ * Fix a segfault with geoip_db_get_all_info() on newer libs (bug #64692).
+ * Add support for geoip_netspeedcell_by_name(), geoip_asnum_by_name() and geoip_domain_by_name() (bug #67121).
  
 1.0.8	2011-10-23
 
