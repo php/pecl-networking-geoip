@@ -526,7 +526,6 @@ PHP_FUNCTION(geoip_netspeedcell_by_name)
 	org = GeoIP_name_by_name(gi, hostname);
 	GeoIP_delete(gi);
 	if (org == NULL) {
-		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "Host %s not found", hostname);
 		RETURN_FALSE;
 	}
 	RETVAL_STRING(org, 1);
