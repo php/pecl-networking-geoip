@@ -58,6 +58,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
    <file name="geoip.c" role="src" />
    <file name="php_geoip.h" role="src" />
    <file name="README" role="doc" />
+   <file name="LICENSE" role="doc" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -75,7 +76,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <changelog>
   <release>
    <version>
-    <release>1.0.9-dev</release>
+    <release>1.1.0-dev</release>
     <api>1.0.3</api>
    </version>
    <stability>
@@ -86,6 +87,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
    <license uri="http://www.php.net/license">PHP License</license>
    <notes>* Add geoip_setup_custom_directory() to setup custom directories per request.
 * Remove E_NOTICES for IPs not found in database.
+* Fix a segfault with geoip_db_get_all_info() on newer libs (bug #64692).
    </notes>
   </release>
   <release>
