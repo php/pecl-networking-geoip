@@ -181,10 +181,20 @@ PHP_RSHUTDOWN_FUNCTION(geoip)
 	/* If we have a custom directory (and have support from   */
 	/* libgeoip, we reset the extension to default directory) */
 	if (GEOIP_G(set_runtime_custom_directory)) {
+#if LIBGEOIP_VERSION >= 1004007
+		GeoIP_cleanup();
+#else
+		int i;
 		if (GeoIPDBFileName != NULL) {
+			for (i = 0; i < NUM_DB_TYPES; i++) {
+				if (GeoIPDBFileName[i]) {
+					free(GeoIPDBFileName[i]);
+				}
+			}
 			free(GeoIPDBFileName);
 			GeoIPDBFileName = NULL;
 		}
+#endif
 
 		GeoIP_setup_custom_directory(GEOIP_G(custom_directory));
 		_GeoIP_setup_dbfilename();
@@ -717,10 +727,20 @@ PHP_FUNCTION(geoip_setup_custom_directory)
 
 	GEOIP_G(set_runtime_custom_directory) = 1;
 
+#if LIBGEOIP_VERSION >= 1004007
+	GeoIP_cleanup();
+#else
+	int i;
 	if (GeoIPDBFileName != NULL) {
+		for (i = 0; i < NUM_DB_TYPES; i++) {
+			if (GeoIPDBFileName[i]) {
+				free(GeoIPDBFileName[i]);
+			}
+		}
 		free(GeoIPDBFileName);
 		GeoIPDBFileName = NULL;
 	}
+#endif
 
 	GeoIP_setup_custom_directory(dir);
 	_GeoIP_setup_dbfilename();
