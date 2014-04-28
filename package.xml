@@ -31,6 +31,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
 * Fix a segfault with geoip_db_get_all_info() on newer libs (bug #64692).
 * Add support for geoip_netspeedcell_by_name(), geoip_asnum_by_name() and geoip_domain_by_name() (bug #67121).
 * Fix memory leak with custom directories (bug #67138).
+* Support changing custom directory via ini_set() (bug #61607).
  </notes>
  <contents>
   <dir name="/">

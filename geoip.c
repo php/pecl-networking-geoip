@@ -96,11 +96,53 @@ zend_module_entry geoip_module_entry = {
 ZEND_GET_MODULE(geoip)
 #endif
 
+#ifdef HAVE_CUSTOM_DIRECTORY
+/* {{{ geoip_change_custom_directory() helper function
+ */
+static void geoip_change_custom_directory(char *value)
+{
+#if LIBGEOIP_VERSION >= 1004007
+	GeoIP_cleanup();
+#else
+	int i;
+	if (GeoIPDBFileName != NULL) {
+		for (i = 0; i < NUM_DB_TYPES; i++) {
+			if (GeoIPDBFileName[i]) {
+				free(GeoIPDBFileName[i]);
+			}
+		}
+		free(GeoIPDBFileName);
+		GeoIPDBFileName = NULL;
+	}
+#endif
+
+	GeoIP_setup_custom_directory(value);
+	_GeoIP_setup_dbfilename();
+}
+/* }}} */
+#endif
+
+#ifdef HAVE_CUSTOM_DIRECTORY
+/* {{{ PHP_INI_MH 
++ */
+static PHP_INI_MH(OnUpdateDirectory)
+{
+	if (stage == PHP_INI_STAGE_RUNTIME || stage == PHP_INI_STAGE_HTACCESS) {
+		GEOIP_G(set_runtime_custom_directory) = 1;
+		geoip_change_custom_directory(new_value);
+		return SUCCESS;
+	}
+	
+	return OnUpdateString(entry, new_value, new_value_length, mh_arg1, mh_arg2, mh_arg3, stage TSRMLS_CC);
+}
+/* }}} */
+#endif
+
 /* {{{ PHP_INI
  */
 PHP_INI_BEGIN()
 #ifdef HAVE_CUSTOM_DIRECTORY
-	STD_PHP_INI_ENTRY("geoip.custom_directory", NULL, PHP_INI_ALL, OnUpdateString, custom_directory, zend_geoip_globals, geoip_globals)
+	STD_PHP_INI_ENTRY("geoip.custom_directory", NULL, PHP_INI_ALL, OnUpdateDirectory, custom_directory, zend_geoip_globals, geoip_globals)
 #endif
 PHP_INI_END()
 /* }}} */
@@ -126,7 +168,6 @@ PHP_MINIT_FUNCTION(geoip)
 #ifdef HAVE_CUSTOM_DIRECTORY
 	GeoIP_setup_custom_directory(GEOIP_G(custom_directory));
 #endif
-	
 	_GeoIP_setup_dbfilename();
 	
 	/* For database type constants */
@@ -181,23 +222,8 @@ PHP_RSHUTDOWN_FUNCTION(geoip)
 	/* If we have a custom directory (and have support from   */
 	/* libgeoip, we reset the extension to default directory) */
 	if (GEOIP_G(set_runtime_custom_directory)) {
-#if LIBGEOIP_VERSION >= 1004007
-		GeoIP_cleanup();
-#else
-		int i;
-		if (GeoIPDBFileName != NULL) {
-			for (i = 0; i < NUM_DB_TYPES; i++) {
-				if (GeoIPDBFileName[i]) {
-					free(GeoIPDBFileName[i]);
-				}
-			}
-			free(GeoIPDBFileName);
-			GeoIPDBFileName = NULL;
-		}
-#endif
-
-		GeoIP_setup_custom_directory(GEOIP_G(custom_directory));
-		_GeoIP_setup_dbfilename();
+		geoip_change_custom_directory(GEOIP_G(custom_directory));
+		GEOIP_G(set_runtime_custom_directory) = 0;
 	}
 #endif
 	
@@ -726,27 +752,11 @@ PHP_FUNCTION(geoip_setup_custom_directory)
 	}
 
 	GEOIP_G(set_runtime_custom_directory) = 1;
-
-#if LIBGEOIP_VERSION >= 1004007
-	GeoIP_cleanup();
-#else
-	int i;
-	if (GeoIPDBFileName != NULL) {
-		for (i = 0; i < NUM_DB_TYPES; i++) {
-			if (GeoIPDBFileName[i]) {
-				free(GeoIPDBFileName[i]);
-			}
-		}
-		free(GeoIPDBFileName);
-		GeoIPDBFileName = NULL;
-	}
-#endif
-
-	GeoIP_setup_custom_directory(dir);
-	_GeoIP_setup_dbfilename();
+	geoip_change_custom_directory(dir);
 }
 /* }}} */
 #endif
+
 
 /*
  * Local variables:
