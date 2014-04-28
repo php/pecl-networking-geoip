@@ -260,7 +260,9 @@ PHP_FUNCTION(geoip_db_get_all_info)
 			array_init(row);
 
 			add_assoc_bool(row, "available", GeoIP_db_avail(i));
-			add_assoc_string(row, "description", (char *)GeoIPDBDescription[i], 1);
+			if (GeoIPDBDescription[i]) {
+				add_assoc_string(row, "description", (char *)GeoIPDBDescription[i], 1);
+			}
 			if (GeoIPDBFileName[i]) {
 				add_assoc_string(row, "filename", GeoIPDBFileName[i], 1);
 			}
