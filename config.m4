@@ -81,6 +81,34 @@ if test "$PHP_GEOIP" != "no"; then
     -L$GEOIP_DIR/$PHP_LIBDIR -lm
   ])
 
+  # Checking for GeoIP_addr_to_num in newer lib
+  PHP_CHECK_LIBRARY($LIBNAME,GeoIP_addr_to_num,
+  [
+    AC_DEFINE(HAVE_ADDR_TO_NUM,1,[ ])
+    MIN_GEOIP_VERSION=1004007
+  ],[
+  ],[
+    -L$GEOIP_DIR/$PHP_LIBDIR -lm
+  ])
+
+  # Checking for GEOIP_NETSPEED_EDITION_REV1
+  AC_CHECK_DECL(GEOIP_NETSPEED_EDITION_REV1,
+  [
+    MIN_GEOIP_VERSION=1004008
+  ],[
+  ],[
+    #include <GeoIP.h>
+  ])
+  
+  # Checking for GEOIP_ACCURACYRADIUS_EDITION
+  AC_CHECK_DECL(GEOIP_ACCURACYRADIUS_EDITION,
+  [
+    MIN_GEOIP_VERSION=1005000
+  ],[
+  ],[
+    #include <GeoIP.h>
+  ])
+  
   # Check to see if we are using the LGPL library (version 1.4.0 and newer)
   AC_MSG_CHECKING([for LGPL compatible GeoIP libs])
   libgeoip_full_version=`find $GEOIP_DIR/$PHP_LIBDIR/ -name libGeoIP.\*.\*.\*.\* | cut -d . -f 2-5 | sort`
