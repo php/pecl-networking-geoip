@@ -15,14 +15,14 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <email>ohill@php.net</email>
   <active>yes</active>
  </lead>
- <date>2012-03-13</date>
- <time>09:39:56</time>
+ <date>2014-05-01</date>
+ <time>14:44:56</time>
  <version>
-  <release>1.1.0-dev</release>
+  <release>1.1.0</release>
   <api>1.0.3</api>
  </version>
  <stability>
-  <release>stable</release>
+  <release>beta</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
@@ -53,6 +53,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
     <file name="016.phpt" role="test" />
     <file name="017.phpt" role="test" />
     <file name="018.phpt" role="test" />
+    <file name="019.phpt" role="test" />
    </dir> <!-- //tests -->
    <file name="ChangeLog" role="doc" />
    <file name="config.m4" role="src" />
@@ -79,20 +80,21 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <changelog>
   <release>
    <version>
-    <release>1.1.0-dev</release>
+    <release>1.1.0</release>
     <api>1.0.3</api>
    </version>
    <stability>
-    <release>stable</release>
+    <release>beta</release>
     <api>stable</api>
    </stability>
-   <date>2012-03-13</date>
+   <date>2014-05-01</date>
    <license uri="http://www.php.net/license">PHP License</license>
    <notes>* Add geoip_setup_custom_directory() to setup custom directories per request.
 * Remove E_NOTICES for IPs not found in database.
 * Fix a segfault with geoip_db_get_all_info() on newer libs (bug #64692).
 * Add support for geoip_netspeedcell_by_name(), geoip_asnum_by_name() and geoip_domain_by_name() (bug #67121).
 * Fix memory leak with custom directories (bug #67138).
+* Support changing custom directory via ini_set() (bug #61607).
    </notes>
   </release>
   <release>
