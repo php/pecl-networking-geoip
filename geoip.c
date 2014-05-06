@@ -117,7 +117,7 @@ static void geoip_change_custom_directory(char *value)
 #endif
 
 	GeoIP_setup_custom_directory(value);
-	_GeoIP_setup_dbfilename();
+	GeoIP_db_avail(GEOIP_COUNTRY_EDITION);
 }
 /* }}} */
 #endif
@@ -168,7 +168,8 @@ PHP_MINIT_FUNCTION(geoip)
 #ifdef HAVE_CUSTOM_DIRECTORY
 	GeoIP_setup_custom_directory(GEOIP_G(custom_directory));
 #endif
-	_GeoIP_setup_dbfilename();
+	/* This will initialize file structure */
+	GeoIP_db_avail(GEOIP_COUNTRY_EDITION);
 	
 	/* For database type constants */
 	REGISTER_LONG_CONSTANT("GEOIP_COUNTRY_EDITION",     GEOIP_COUNTRY_EDITION,     CONST_CS | CONST_PERSISTENT);
