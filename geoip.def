@@ -21,7 +21,7 @@ GEOIPDEF(geoip_country_code_by_name,	GeoIP_country_code_by_name,	GEOIP_COUNTRY_E
 GEOIPDEF(geoip_country_code3_by_name,	GeoIP_country_code3_by_name,	GEOIP_COUNTRY_EDITION)
 GEOIPDEF(geoip_country_name_by_name,	GeoIP_country_name_by_name,	GEOIP_COUNTRY_EDITION)
 
-#if LIBGEOIP_VERSION >= 1004005 && FALSE
+#if LIBGEOIP_VERSION >= 1004005
 GEOIPDEF(geoip_country_code_by_name_v6,	GeoIP_country_code_by_name_v6,	GEOIP_COUNTRY_EDITION_V6)
 GEOIPDEF(geoip_country_code3_by_name_v6,	GeoIP_country_code3_by_name_v6,	GEOIP_COUNTRY_EDITION_V6)
 GEOIPDEF(geoip_country_name_by_name_v6,	GeoIP_country_name_by_name_v6,	GEOIP_COUNTRY_EDITION_V6)
