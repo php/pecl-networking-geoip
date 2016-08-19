@@ -24,7 +24,7 @@
 extern zend_module_entry geoip_module_entry;
 #define phpext_geoip_ptr &geoip_module_entry
 
-#define PHP_GEOIP_VERSION "1.1.1"
+#define PHP_GEOIP_VERSION "1.1.2-dev"
 
 #if PHP_MAJOR_VERSION < 7
 typedef long zend_long;
