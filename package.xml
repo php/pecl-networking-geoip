@@ -15,10 +15,10 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <email>ohill@php.net</email>
   <active>yes</active>
  </lead>
- <date>2014-05-01</date>
+ <date>2016-08-18</date>
  <time>14:44:56</time>
  <version>
-  <release>1.1.1-dev</release>
+  <release>1.1.1</release>
   <api>1.0.3</api>
  </version>
  <stability>
@@ -26,7 +26,8 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
- <notes>* </notes>
+ <notes>* Add IPv6 support (geoip_country_code_by_*_v6)
+* PHP7 support (thanks to Adam and Dan Ackroyd)</notes>
  <contents>
   <dir name="/">
    <dir name="tests">
