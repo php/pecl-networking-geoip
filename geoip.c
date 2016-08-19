@@ -365,7 +365,7 @@ PHP_FUNCTION(geoip_database_info)
 		gi = GeoIP_open_type(edition, GEOIP_STANDARD);
 	} else {
 		if (NULL != GeoIPDBFileName[edition])
-			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[GEOIP_COUNTRY_EDITION]);
+			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available at %s.", GeoIPDBFileName[edition]);
 		else
 			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Required database not available.");
 		return;
